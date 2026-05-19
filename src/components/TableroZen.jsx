@@ -261,7 +261,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva }) {
       </div>
 
       {/* CAJAS MODULARES GEMELAS: AGENDA Y ESTADO PARLAMENTARIO */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '32px' }}>
+      <div className="main-dashboard-container" style={{ display: 'flex', gap: '32px', width: '100%' }}>
         
         {/* UNIDAD 1: AGENDA INMEDIATA */}
         <div className="hardware-unit" style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>

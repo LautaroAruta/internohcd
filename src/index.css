@@ -372,6 +372,27 @@ body {
   }
 }
 
+/* Contenedor principal de la Intranet (Tablero Gemelo) */
+.main-dashboard-container {
+  display: flex;
+  flex-direction: column; /* Por defecto en vertical: uno abajo del otro para celulares */
+  gap: 24px;
+  width: 100%;
+}
+
+/* En horizontal y PC, se pone en dos columnas */
+@media (min-width: 768px) {
+  .main-dashboard-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .main-dashboard-container > div {
+    width: 50%;
+    flex: 1;
+  }
+}
+
 /* OPTIMIZACIÓN RESPONSIVA MÓVIL EXTREMA (MIRA, TOCA Y SALGO) */
 @media (max-width: 768px) {
   /* Contenedores Principales */
@@ -512,6 +533,8 @@ body {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 12px !important;
+    min-height: 120px !important;
+    width: 100% !important;
   }
 
   .tactical-grid span[style*="font-size: 1.15rem"] {
