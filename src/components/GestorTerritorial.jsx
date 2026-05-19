@@ -4,7 +4,8 @@ import { supabase } from '../supabaseClient';
 
 export default function GestorTerritorial() {
   const [reclamo, setReclamo] = useState({
-    barrio: 'Barrio San Ceferino',
+    barrio: 'San Martín (Ciudad / Centro)',
+    domicilio: '',
     vecino: '',
     telefono: '',
     detalle: ''
@@ -19,6 +20,7 @@ export default function GestorTerritorial() {
   const [reclamoEditando, setReclamoEditando] = useState(null);
   const [datosEdicion, setDatosEdicion] = useState({
     barrio: '',
+    domicilio: '',
     vecino: '',
     telefono: '',
     detalle: ''
@@ -28,6 +30,7 @@ export default function GestorTerritorial() {
     setReclamoEditando(rec.id);
     setDatosEdicion({
       barrio: rec.barrio || '',
+      domicilio: rec.domicilio || '',
       vecino: rec.vecino || '',
       telefono: rec.tel || rec.telefono || '',
       detalle: rec.detalle || ''
@@ -39,6 +42,7 @@ export default function GestorTerritorial() {
     try {
       const actualizados = {
         barrio: datosEdicion.barrio,
+        domicilio: datosEdicion.domicilio,
         vecino: datosEdicion.vecino,
         tel: datosEdicion.telefono,
         detalle: datosEdicion.detalle
@@ -77,19 +81,23 @@ export default function GestorTerritorial() {
     fetchReclamos();
   }, []);
 
-  const barriosSanMartin = [
-    'Barrio San Ceferino',
-    'San Martín Centro',
+  const distritosSanMartin = [
+    'San Martín (Ciudad / Centro)',
     'Palmira',
     'Buen Orden',
+    'Alto Verde',
+    'Alto Salvador',
     'Chapanay',
     'Tres Porteñas',
     'El Central',
     'Nueva California',
-    'Alto Verde',
-    'Alto Salvador',
-    'Gral. San Martín (Barrio Mebna)',
-    'Barrio Córdoba'
+    'Chivilcoy',
+    'El Divisadero',
+    'El Espino',
+    'El Ramblón',
+    'Las Chimbas',
+    'Montecaseros',
+    'Otro / Fuera de Distrito'
   ];
 
   const guardarReclamo = async (e) => {
@@ -98,6 +106,7 @@ export default function GestorTerritorial() {
 
     const nuevoRec = {
       barrio: reclamo.barrio,
+      domicilio: reclamo.domicilio || 'Sin Domicilio Especificado',
       vecino: reclamo.vecino || 'Vecino Anónimo',
       tel: reclamo.telefono || 'Sin Teléfono',
       detalle: reclamo.detalle,
@@ -116,7 +125,7 @@ export default function GestorTerritorial() {
       setReclamosGuardados(prev => [{ ...nuevoRec, id: Date.now() }, ...prev]);
     }
 
-    setReclamo({ barrio: reclamo.barrio, vecino: '', telefono: '', detalle: '' });
+    setReclamo({ barrio: reclamo.barrio, domicilio: '', vecino: '', telefono: '', detalle: '' });
     setEnviado(true);
     setTimeout(() => setEnviado(false), 2500);
   };
@@ -144,13 +153,25 @@ export default function GestorTerritorial() {
             <MessageSquare size={20} color="var(--accent-lime)" /> Nuevo Reclamo en Territorio
           </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>SELECCIONAR BARRIO / DISTRITO</label>
-            <select className="input-hardware" value={reclamo.barrio} onChange={e => setReclamo({...reclamo, barrio: e.target.value})}>
-              {barriosSanMartin.map((b, i) => (
-                <option key={i} value={b}>{b}</option>
-              ))}
-            </select>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DISTRITO</label>
+              <select className="input-hardware" value={reclamo.barrio} onChange={e => setReclamo({...reclamo, barrio: e.target.value})}>
+                {distritosSanMartin.map((b, i) => (
+                  <option key={i} value={b}>{b}</option>
+                ))}
+              </select>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DOMICILIO / BARRIO</label>
+              <input 
+                type="text" 
+                className="input-hardware" 
+                placeholder="Calle, N°, Barrio..." 
+                value={reclamo.domicilio}
+                onChange={e => setReclamo({...reclamo, domicilio: e.target.value})}
+              />
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -222,7 +243,7 @@ export default function GestorTerritorial() {
             <span style={{ fontSize: '1.1rem' }}>🔍</span>
             <input 
               type="text" 
-              placeholder="Buscar por barrio, vecino, teléfono o detalle..."
+              placeholder="Buscar por distrito, barrio, vecino, teléfono o detalle..."
               value={busquedaTerritorio}
               onChange={e => setBusquedaTerritorio(e.target.value)}
               style={{ flex: 1, border: 'none', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-main)', background: 'transparent' }}
@@ -237,6 +258,7 @@ export default function GestorTerritorial() {
               if (!busquedaTerritorio) return true;
               const term = busquedaTerritorio.toLowerCase();
               return (rec.barrio?.toLowerCase().includes(term) ||
+                      rec.domicilio?.toLowerCase().includes(term) ||
                       rec.vecino?.toLowerCase().includes(term) ||
                       rec.tel?.toLowerCase().includes(term) ||
                       rec.telefono?.toLowerCase().includes(term) ||
@@ -261,15 +283,24 @@ export default function GestorTerritorial() {
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-lime)' }}>
                     [ EDITANDO RECLAMO ID: {rec.id} ]
                   </div>
-                  <select 
-                    className="input-hardware" 
-                    value={datosEdicion.barrio} 
-                    onChange={e => setDatosEdicion({...datosEdicion, barrio: e.target.value})}
-                  >
-                    {barriosSanMartin.map((b, i) => (
-                      <option key={i} value={b}>{b}</option>
-                    ))}
-                  </select>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <select 
+                      className="input-hardware" 
+                      value={datosEdicion.barrio} 
+                      onChange={e => setDatosEdicion({...datosEdicion, barrio: e.target.value})}
+                    >
+                      {distritosSanMartin.map((b, i) => (
+                        <option key={i} value={b}>{b}</option>
+                      ))}
+                    </select>
+                    <input 
+                      type="text" 
+                      className="input-hardware" 
+                      value={datosEdicion.domicilio} 
+                      onChange={e => setDatosEdicion({...datosEdicion, domicilio: e.target.value})} 
+                      placeholder="Domicilio / Barrio" 
+                    />
+                  </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <input 
                       type="text" 
@@ -320,7 +351,12 @@ export default function GestorTerritorial() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span style={{ fontWeight: '800', color: 'var(--text-main)' }}>{rec.barrio}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span style={{ fontWeight: '800', color: 'var(--text-main)', background: 'var(--accent-lime)', padding: '2px 8px', borderRadius: '6px', border: '1px solid var(--border-dark)' }}>{rec.barrio}</span>
+                      {rec.domicilio && rec.domicilio !== 'Sin Domicilio Especificado' && (
+                        <span style={{ color: 'var(--text-subtle)', fontWeight: '700' }}>📍 {rec.domicilio}</span>
+                      )}
+                    </div>
                     <span style={{ fontWeight: '700' }}>{rec.fecha}</span>
                   </div>
 
