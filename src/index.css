@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Paleta Cyber-Industrial / Teenage Engineering Matte Grey */
+  --bg-base: #e5e5e5;
+  --bg-surface: #f5f5f5;
+  --bg-surface-hover: #ebebeb;
+  --bg-dark: #171717;
+  --bg-led: #121212;
+  
+  /* Bordes y Sombras Mecánicas Duras */
+  --border-dark: #171717;
+  --border-light: #ffffff;
+  
+  /* Tipografía Industrial de Alta Precisión */
+  --text-main: #171717;
+  --text-muted: #525252;
+  --text-subtle: #737373;
+  --text-led-green: #10b981;
+  --text-led-amber: #f59e0b;
+  --text-led-red: #ef4444;
+  
+  /* Paleta de Acentos de Sintetizador Modular */
+  --accent-orange: #f97316;
+  --accent-lime: #84cc16;
+  --accent-cyan: #06b6d4;
+  --accent-yellow: #facc15;
+  --accent-purple: #c084fc;
+  --accent-emerald: #10b981;
+  --accent-pink: #f43f5e;
+  --accent-red: #ef4444;
+
+  /* Sombras Duras de Hardware (Hard Drop Shadows) */
+  --shadow-unit: 6px 6px 0px #171717, inset 2px 2px 0px #ffffff;
+  --shadow-unit-hover: 8px 8px 0px #171717, inset 2px 2px 0px #ffffff;
+  --shadow-btn: 4px 4px 0px #171717;
+  --shadow-btn-active: 1px 1px 0px #171717;
+  --shadow-led: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 0 rgba(255, 255, 255, 0.5);
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Patrón de Rejilla Industrial Sutil */
+  background-image: 
+    linear-gradient(rgba(23, 23, 23, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Cajas Modulares de Hardware (Modular Hardware Units) */
+.hardware-unit {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-dark);
+  border-radius: 16px;
+  box-shadow: var(--shadow-unit);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.hardware-unit:hover {
+  box-shadow: var(--shadow-unit-hover);
+  transform: translate(-2px, -2px);
+}
+
+/* Pantallas LED Simuladas (Dot-Matrix LED Display) */
+.led-display {
+  background: var(--bg-led);
+  border: 2px solid var(--border-dark);
+  border-radius: 12px;
+  color: var(--text-led-green);
+  font-family: var(--font-mono);
+  box-shadow: var(--shadow-led);
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.led-display::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0.03) 50%, transparent 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* Botones Mecánicos Gruesos (Chunky Mechanical Push Buttons) */
+.btn-mechanical {
+  background: #ffffff;
+  color: var(--text-main);
+  border: 2px solid var(--border-dark);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-btn);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.btn-mechanical:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px #171717;
+}
+
+.btn-mechanical:active {
+  transform: translate(3px, 3px);
+  box-shadow: var(--shadow-btn-active);
+}
+
+/* Variantes de Color Mecánico */
+.btn-orange { background: var(--accent-orange); color: white; }
+.btn-lime { background: var(--accent-lime); color: var(--text-main); }
+.btn-cyan { background: var(--accent-cyan); color: var(--text-main); }
+.btn-yellow { background: var(--accent-yellow); color: var(--text-main); }
+.btn-purple { background: var(--accent-purple); color: white; }
+.btn-emerald { background: var(--accent-emerald); color: white; }
+.btn-dark { background: var(--bg-dark); color: white; }
+
+/* Botones de Acción Mini Mecánicos (Mini Action Buttons) */
+.btn-mini-mech {
+  background: #ffffff;
+  color: var(--text-main);
+  border: 2px solid var(--border-dark);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 2px 2px 0px #171717;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.btn-mini-mech:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #171717;
+}
+
+.btn-mini-mech:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #171717;
+}
+
+.btn-mini-mech.edit {
+  background: #ffffff;
+  color: var(--text-main);
+}
+
+.btn-mini-mech.edit:hover {
+  background: var(--accent-yellow);
+}
+
+.btn-mini-mech.delete {
+  background: var(--accent-red);
+  color: #ffffff;
+}
+
+.btn-mini-mech.delete:hover {
+  background: #dc2626;
+}
+
+/* Pestañas de Consola de Control (Mission Control Tabs) */
+.nav-mech-btn {
+  background: #ffffff;
+  color: var(--text-muted);
+  border: 2px solid var(--border-dark);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 2px 2px 0px #171717;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-mech-btn:hover {
+  color: var(--text-main);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #171717;
+}
+
+.nav-mech-btn.active {
+  background: var(--accent-orange);
+  color: white;
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #171717;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+  border-left: 2px solid var(--border-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border: 2px solid var(--border-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-main);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Inputs & Forms */
+.input-hardware {
+  width: 100%;
+  background: #ffffff;
+  border: 2px solid var(--border-dark);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  transition: all 0.15s ease;
+  outline: none;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.input-hardware:focus {
+  border-color: var(--accent-orange);
+  background: #fffbeb;
+  box-shadow: inset 2px 2px 0px rgba(249,115,22,0.2);
+}
+
+/* Etiquetas Mecánicas (Hardware Labels) */
+.mech-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid var(--border-dark);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+/* Badges Mecánicos */
+.badge-mech {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--border-dark);
+  box-shadow: 2px 2px 0px #171717;
+}
+
+.badge-borrador { background: #e5e5e5; color: #171717; }
+.badge-comision { background: var(--accent-yellow); color: #171717; }
+.badge-sesion { background: var(--accent-cyan); color: #171717; }
+.badge-aprobado { background: var(--accent-lime); color: #171717; }
+
+/* CONFIGURACIÓN AVANZADA DE IMPRESIÓN Y EXPORTACIÓN A PDF */
+@media print {
+  /* 1. Ocultar completamente la aplicación de fondo (#root) y cualquier elemento marcado con .no-print para erradicar la primera página en blanco */
+  #root, .no-print {
+    display: none !important;
+  }
+
+  /* 2. Asegurar que el body y los contenedores del modal se comporten como bloques normales transparentes en la Página 1 */
+  html, body, div {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* 3. Darle estilo limpio al papel oficial para que ocupe el 100% del ancho desde el inicio de la Página 1 */
+  #documento-papel-oficial {
+    padding: 20px !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-inside: auto !important;
+  }
+
+  /* 4. Asegurar que los párrafos, títulos y artículos no se corten por la mitad entre páginas */
+  #documento-papel-oficial p, 
+  #documento-papel-oficial h3, 
+  #documento-papel-oficial h4, 
+  #documento-papel-oficial div {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
