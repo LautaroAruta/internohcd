@@ -57,22 +57,22 @@ export default function App() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
       {/* CONSOLA DE CONTROL SUPERIOR (Panel de Hardware en Español) */}
-      <header style={{ background: '#f5f5f5', borderBottom: '3px solid var(--border-dark)', padding: '24px 32px', boxShadow: '0 4px 0px #171717', position: 'sticky', top: 0, zIndex: 100 }}>
+      <header className="app-header-container" style={{ background: '#f5f5f5', borderBottom: '3px solid var(--border-dark)', padding: '24px 32px', boxShadow: '0 4px 0px #171717', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Fila Institucional / Display LED Superior */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+          <div className="app-header-title-group" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
             
             {/* Placa de Identificación de Hardware */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div className="app-header-top-row" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ background: 'var(--accent-orange)', color: 'white', border: '2px solid var(--border-dark)', padding: '6px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontWeight: '800', fontSize: '0.85rem', boxShadow: '2px 2px 0px #171717' }}>
                 SISTEMA // HCD SAN MARTÍN
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Shield size={24} color="var(--border-dark)" />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '1.2rem', fontWeight: '900', letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--text-main)' }}>BÚNKER DIGITAL HCD</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: '700' }}>SISTEMA LEGISLATIVO // VERSIÓN 8.2</span>
+                  <span className="app-header-title-text" style={{ fontSize: '1.2rem', fontWeight: '900', letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--text-main)' }}>BÚNKER DIGITAL HCD</span>
+                  <span className="app-header-version-text" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: '700' }}>SISTEMA LEGISLATIVO // VERSIÓN 8.2</span>
                 </div>
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function App() {
       </header>
 
       {/* CONTENEDOR PRINCIPAL DE MÓDULOS */}
-      <main style={{ flex: 1, padding: '40px 32px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+      <main className="app-main-container" style={{ flex: 1, padding: '40px 32px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
         {tabActiva === 'zen' && <TableroZen expedientes={expedientes} eventos={eventos} />}
         {tabActiva === 'agenda' && <Agenda eventos={eventos} setEventos={setEventos} />}
         {tabActiva === 'expedientes' && <KanbanExpedientes expedientes={expedientes} setExpedientes={setExpedientes} />}

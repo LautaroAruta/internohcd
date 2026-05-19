@@ -360,6 +360,7 @@ export default function TableroZen({ expedientes, eventos }) {
         <div className="hardware-unit" style={{ gridColumn: '1 / -1', padding: '36px' }}>
           <button 
             onClick={() => setTogglePapeles(!togglePapeles)}
+            className="collapse-btn"
             style={{ 
               width: '100%', 
               display: 'flex', 
@@ -374,15 +375,15 @@ export default function TableroZen({ expedientes, eventos }) {
               padding: 0
             }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+            <span className="collapse-btn-left" style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
               <div style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '2px 2px 0px #171717' }}>
                 <FileText size={22} />
               </div>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '14px', letterSpacing: '-0.02em' }}>
-                03: PAPELES DE LA SEMANA <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ {papelesSemana.length} ARCHIVOS DISPONIBLES ]</span>
+              <span className="collapse-btn-title" style={{ display: 'flex', alignItems: 'center', gap: '14px', letterSpacing: '-0.02em' }}>
+                03: PAPELES DE LA SEMANA <span className="collapse-btn-badge" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ {papelesSemana.length} ARCHIVOS DISPONIBLES ]</span>
               </span>
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: '800' }}>
+            <div className="collapse-btn-right" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: '800' }}>
               {togglePapeles ? 'CERRAR' : 'ABRIR'} {togglePapeles ? <ChevronDown size={22} color="var(--border-dark)" /> : <ChevronRight size={22} />}
             </div>
           </button>
@@ -395,7 +396,7 @@ export default function TableroZen({ expedientes, eventos }) {
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <FileCheck size={18} /> ✍️ AGREGAR ORDEN DEL DÍA / DOCUMENTO OFICIAL:
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px 120px', gap: '18px', alignItems: 'center' }}>
+                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 220px 120px', gap: '18px', alignItems: 'center' }}>
                   <input 
                     type="text" 
                     placeholder="TÍTULO / DESCRIPCIÓN (EJ: Orden del Día Sesión 20.pdf)" 
@@ -453,7 +454,7 @@ export default function TableroZen({ expedientes, eventos }) {
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-cyan)' }}>
                         [ EDITANDO DOCUMENTO ID: {p.id} ]
                       </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px 120px', gap: '14px', alignItems: 'center' }}>
+                      <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 220px 120px', gap: '14px', alignItems: 'center' }}>
                         <input 
                           type="text" 
                           placeholder="Título del documento" 
@@ -499,7 +500,7 @@ export default function TableroZen({ expedientes, eventos }) {
                       </div>
                     </form>
                   ) : (
-                    <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff', padding: '22px 28px', borderRadius: '14px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717', transition: 'all 0.1s', flexWrap: 'wrap', gap: '16px' }} className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_#171717]">
+                    <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff', padding: '22px 28px', borderRadius: '14px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717', transition: 'all 0.1s', flexWrap: 'wrap', gap: '16px' }} className="papel-item hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_#171717]">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '22px', flex: 1, minWidth: '280px' }}>
                         <span style={{ fontSize: '2rem' }}>{p.icono}</span>
                         <div>
@@ -507,7 +508,7 @@ export default function TableroZen({ expedientes, eventos }) {
                           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: '700' }}>TIPO: {p.tipo}</div>
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                      <div className="papel-item-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                         <button 
                           onClick={(e) => { 
                             e.stopPropagation(); 
@@ -562,6 +563,7 @@ export default function TableroZen({ expedientes, eventos }) {
         <div className="hardware-unit" style={{ gridColumn: '1 / -1', padding: '36px' }}>
           <button 
             onClick={() => setToggleMinutas(!toggleMinutas)}
+            className="collapse-btn"
             style={{ 
               width: '100%', 
               display: 'flex', 
@@ -576,15 +578,15 @@ export default function TableroZen({ expedientes, eventos }) {
               padding: 0
             }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+            <span className="collapse-btn-left" style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
               <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '2px 2px 0px #171717' }}>
                 <MessageSquare size={22} />
               </div>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '14px', letterSpacing: '-0.02em' }}>
-                04: MINUTAS RÁPIDAS <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 12px', borderRadius: '6px', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ {minutas.length} NOTAS GUARDADAS ]</span>
+              <span className="collapse-btn-title" style={{ display: 'flex', alignItems: 'center', gap: '14px', letterSpacing: '-0.02em' }}>
+                04: MINUTAS RÁPIDAS <span className="collapse-btn-badge" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 12px', borderRadius: '6px', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ {minutas.length} NOTAS GUARDADAS ]</span>
               </span>
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: '800' }}>
+            <div className="collapse-btn-right" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: '800' }}>
               {toggleMinutas ? 'CERRAR' : 'ABRIR'} {toggleMinutas ? <ChevronDown size={22} color="var(--border-dark)" /> : <ChevronRight size={22} />}
             </div>
           </button>
@@ -597,7 +599,7 @@ export default function TableroZen({ expedientes, eventos }) {
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Terminal size={18} /> ✍️ INGRESO DE MINUTA RÁPIDA AL SALIR DE COMISIÓN:
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '18px' }}>
+                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '18px' }}>
                   <input 
                     type="text" 
                     placeholder="COMISIÓN (EJ: HACIENDA)" 
@@ -643,7 +645,7 @@ export default function TableroZen({ expedientes, eventos }) {
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-lime)' }}>
                         [ EDITANDO MINUTA ID: {m.id} ]
                       </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '14px' }}>
+                      <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '14px' }}>
                         <input 
                           type="text" 
                           placeholder="Comisión" 
@@ -677,12 +679,12 @@ export default function TableroZen({ expedientes, eventos }) {
                       </div>
                     </form>
                   ) : (
-                    <div key={m.id} style={{ background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '14px', padding: '24px 28px', borderLeft: '8px solid var(--accent-lime)', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: '4px 4px 0px #171717' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    <div key={m.id} className="minuta-item" style={{ background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '14px', padding: '24px 28px', borderLeft: '8px solid var(--accent-lime)', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: '4px 4px 0px #171717' }}>
+                      <div className="minuta-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <strong style={{ color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>[ {m.fecha} ]</strong> // <span style={{ color: 'var(--text-main)', fontWeight: '800' }}>{m.comision}</span>
                         </span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div className="minuta-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <span style={{ fontFamily: 'var(--font-mono)', background: '#f5f5f5', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>AUTOR: {m.autor}</span>
                           <button 
                             type="button" 
@@ -715,7 +717,7 @@ export default function TableroZen({ expedientes, eventos }) {
         </div>
 
         {/* BOTONERA TÁCTICA DE SINTETIZADOR (Grid 2x2 en Español) */}
-        <div style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
+        <div className="tactical-grid" style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
           <a 
             href="https://www.youtube.com/results?search_query=hcd+san+martin+mendoza+en+vivo" 
             target="_blank" 
