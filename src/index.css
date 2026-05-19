@@ -679,11 +679,10 @@ body {
 }
 
 /* ==========================================
-   RESET DE EMERGENCIA PARA CELULARES VERTICALES
+   RESET DE EMERGENCIA PARA CELULARES VERTICALES (CALIBRADO)
    ========================================== */
 @media screen and (max-width: 768px) {
   
-  /* Forzamos a que el cuerpo y el contenedor principal ocupen SOLO el ancho del celu */
   html, body {
     width: 100% !important;
     max-width: 100vw !important;
@@ -702,19 +701,54 @@ body {
     flex-direction: column !important;
   }
 
-  main, .app-main-container, .main-dashboard-container, .dashboard {
+  /* Solo aplicamos padding al contenedor principal main para evitar dobles márgenes en hijos */
+  main.app-main-container {
     width: 100% !important;
     max-width: 100vw !important;
     min-width: 0 !important;
     overflow-x: hidden !important;
     display: flex !important;
     flex-direction: column !important;
-    padding: 16px 12px !important; /* Margen para que no toque los bordes físicos */
+    padding: 16px 12px !important;
     box-sizing: border-box !important;
   }
 
-  /* Buscamos cualquier fila (Flex o Grid) y la obligamos a apilarse en vertical */
-  .flex-row, .grid, [class*="grid-cols-"], .row, .hardware-grid, .tactical-grid, div[style*="display: grid"] {
+  /* El contenedor gemelo se apila perfectamente sin añadir paddings extra */
+  .main-dashboard-container, .dashboard {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Unidades modulares ocupan 100% con padding calibrado a 20px para no asfixiar la pantalla */
+  .hardware-unit, .agenda-section, .documentos-section, .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+    padding: 20px !important;
+  }
+
+  /* Botonera táctica en grilla 2x2 perfecta con botones altos para el pulgar */
+  .tactical-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Formularios internos y botoneras se apilan en vertical */
+  .form-grid, .botonera-grid, .directorio-grid, .fabrica-grid, .gestor-grid {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
@@ -723,14 +757,26 @@ body {
     box-sizing: border-box !important;
   }
 
-  /* Obligamos a todas las tarjetas, componentes, agenda y botones a ocupar todo el ancho */
-  .hardware-unit, .btn-mechanical, .agenda-section, .documentos-section, card, .card {
+  /* Botones mecánicos ocupan 100% en celulares */
+  .btn-mechanical {
     width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
     box-sizing: border-box !important;
+    justify-content: center !important;
+  }
+
+  /* Excepción vital: Proteger la grilla del calendario mensual de 7 columnas para que no colapse en vertical */
+  .calendar-grid-container {
+    overflow-x: auto !important;
+    width: 100% !important;
+    padding-bottom: 12px !important;
+    display: block !important;
+  }
+  .calendar-7col-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    min-width: 680px !important;
+    gap: 8px !important;
+    width: auto !important;
   }
 }
 
