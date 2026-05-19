@@ -677,3 +677,60 @@ body {
     transform: none !important;
   }
 }
+
+/* ==========================================
+   RESET DE EMERGENCIA PARA CELULARES VERTICALES
+   ========================================== */
+@media screen and (max-width: 768px) {
+  
+  /* Forzamos a que el cuerpo y el contenedor principal ocupen SOLO el ancho del celu */
+  html, body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #root, #app {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  main, .app-main-container, .main-dashboard-container, .dashboard {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 16px 12px !important; /* Margen para que no toque los bordes físicos */
+    box-sizing: border-box !important;
+  }
+
+  /* Buscamos cualquier fila (Flex o Grid) y la obligamos a apilarse en vertical */
+  .flex-row, .grid, [class*="grid-cols-"], .row, .hardware-grid, .tactical-grid, div[style*="display: grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Obligamos a todas las tarjetas, componentes, agenda y botones a ocupar todo el ancho */
+  .hardware-unit, .btn-mechanical, .agenda-section, .documentos-section, card, .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
