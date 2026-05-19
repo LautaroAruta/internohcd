@@ -553,6 +553,12 @@ body {
   }
 
   /* Agenda y Calendario Mensual */
+  .agenda-futura-container {
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    scroll-behavior: smooth !important;
+    padding-right: 8px !important;
+  }
   .calendar-grid-container {
     overflow-x: auto !important;
     padding-bottom: 12px !important;

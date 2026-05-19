@@ -533,7 +533,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         </button>
 
         {toggleLista && (
-          <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingLeft: '8px' }}>
+          <div className="agenda-futura-container animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingLeft: '8px' }}>
             {eventosFiltrados.length === 0 ? (
               <div style={{ padding: '24px', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', fontSize: '0.85rem', fontWeight: '700' }}>
                 [ SIN EVENTOS AGENDADOS PARA ESTA SELECCIÓN ]
