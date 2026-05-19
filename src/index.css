@@ -635,4 +635,16 @@ body {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
   }
+
+  /* Desactivar animaciones de hover pesadas / saltos en móviles para evitar toques accidentales al hacer scroll */
+  .hardware-unit:hover,
+  .btn-mechanical:hover,
+  .btn-mini-mech:hover,
+  .nav-mech-btn:hover,
+  .tactical-grid a:hover,
+  .tactical-grid button:hover,
+  .hover\:translate-x-\[-2px\]:hover,
+  .hover\:translate-y-\[-2px\]:hover {
+    transform: none !important;
+  }
 }
