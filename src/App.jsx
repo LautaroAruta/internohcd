@@ -10,6 +10,7 @@ import { supabase } from './supabaseClient';
 
 export default function App() {
   const [tabActiva, setTabActiva] = useState('zen');
+  const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false);
   
   const [expedientes, setExpedientes] = useState([
     { id: 1, numero: 'EXP-2026-089', titulo: 'Bacheo y repavimentación Calle Neuquén', iniciador: 'Bloque Oficialista', estado: 'Borrador / Redacción', comision: 'Obras Públicas', fecha: '14/05/2026', prioridad: 'Alta', archivo: 'Borrador_Bacheo_Neuquen.docx', tipo: 'Ordenanza', responsable: 'Bloque Oficialista' },
@@ -53,6 +54,12 @@ export default function App() {
     fetchAgenda();
   }, []);
 
+  const notificaciones = [
+    { id: 1, texto: 'Sincronización Supabase activa y en línea.', tiempo: 'Hace 2 min', tipo: 'info' },
+    { id: 2, texto: `Último expediente registrado: ${expedientes[expedientes.length - 1]?.numero || 'EXP-2026-089'}`, tiempo: 'Hace 15 min', tipo: 'success' },
+    { id: 3, alert: true, texto: 'Reunión de Labor Legislativa programada para el viernes.', tiempo: 'Hace 1 hora', tipo: 'warning' }
+  ];
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
@@ -79,10 +86,37 @@ export default function App() {
 
 
 
-            {/* Botón de Alarma / Campana Mecánica */}
-            <button style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '10px', borderRadius: '10px', cursor: 'pointer', boxShadow: '3px 3px 0px #171717', transition: 'all 0.1s' }} className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#171717] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#171717]">
-              <Bell size={20} color="var(--border-dark)" />
-            </button>
+            {/* Contenedor Relativo para Botón de Alarma y Popup */}
+            <div style={{ position: 'relative' }}>
+              <button 
+                onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
+                style={{ background: mostrarNotificaciones ? '#171717' : '#ffffff', color: mostrarNotificaciones ? '#ffffff' : 'var(--border-dark)', border: '2px solid var(--border-dark)', padding: '10px', borderRadius: '10px', cursor: 'pointer', boxShadow: mostrarNotificaciones ? '1px 1px 0px #171717' : '3px 3px 0px #171717', transition: 'all 0.1s' }} 
+                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#171717] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#171717]"
+                title="Centro de Notificaciones y Registro del Sistema"
+              >
+                <Bell size={20} />
+              </button>
+
+              {mostrarNotificaciones && (
+                <div className="hardware-unit animate-fade-in" style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', width: '340px', background: '#ffffff', border: '3px solid var(--border-dark)', borderRadius: '16px', boxShadow: '8px 8px 0px #171717', zIndex: 1000, padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border-dark)', paddingBottom: '12px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: 'var(--text-main)' }}>🔔 REGISTRO DE EVENTOS</span>
+                    <button onClick={() => setMostrarNotificaciones(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ X ]</button>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '300px', overflowY: 'auto' }}>
+                    {notificaciones.map(n => (
+                      <div key={n.id} style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '10px 12px', background: '#f9f9f9', border: '1px solid rgba(0,0,0,0.1)', borderLeft: n.tipo === 'warning' ? '6px solid var(--accent-orange)' : n.tipo === 'success' ? '6px solid var(--accent-lime)' : '6px solid var(--accent-cyan)', borderRadius: '8px' }}>
+                        <span style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>{n.texto}</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-subtle)', fontWeight: '700' }}>{n.tiempo}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '10px', fontWeight: '700' }}>
+                    SISTEMA DE MONITOREO HCD SAN MARTÍN
+                  </div>
+                </div>
+              )}
+            </div>
 
           </div>
 
@@ -131,7 +165,7 @@ export default function App() {
 
       {/* CONTENEDOR PRINCIPAL DE MÓDULOS */}
       <main className="app-main-container" style={{ flex: 1, padding: '40px 32px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
-        {tabActiva === 'zen' && <TableroZen expedientes={expedientes} eventos={eventos} />}
+        {tabActiva === 'zen' && <TableroZen expedientes={expedientes} eventos={eventos} setTabActiva={setTabActiva} />}
         {tabActiva === 'agenda' && <Agenda eventos={eventos} setEventos={setEventos} />}
         {tabActiva === 'expedientes' && <KanbanExpedientes expedientes={expedientes} setExpedientes={setExpedientes} />}
         {tabActiva === 'ia' && <FabricaProyectos expedientes={expedientes} setExpedientes={setExpedientes} />}

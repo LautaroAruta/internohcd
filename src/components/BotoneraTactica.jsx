@@ -48,7 +48,7 @@ export default function BotoneraTactica() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
       
       {/* Botonera de 4 Columnas con Sombras Duras */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
+      <div className="botonera-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
         {botones.map((btn) => (
           <a 
             key={btn.id}
@@ -95,7 +95,7 @@ export default function BotoneraTactica() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+        <div className="directorio-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
           {contactos.map((c, i) => (
             <a 
               key={i} 

@@ -127,7 +127,7 @@ Artículo 3°: De forma.`;
       </div>
 
       {/* Contenedor Principal Dividido en 2 Columnas */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', flexGrow: 1 }}>
+      <div className="fabrica-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', flexGrow: 1 }}>
         
         {/* Columna Izquierda: Formulario de Entrada */}
         <form onSubmit={generarProyecto} style={{ background: '#ffffff', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -200,7 +200,7 @@ Artículo 3°: De forma.`;
         </form>
 
         {/* Columna Derecha: Resultado IA y Acciones */}
-        <div style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
+        <div className="fabrica-right-col" style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
               <Bot size={20} color="var(--accent-purple)" /> VENTANA DE ASISTENTE

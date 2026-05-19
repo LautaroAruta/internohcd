@@ -551,4 +551,88 @@ body {
     justify-content: flex-start !important;
     flex-wrap: wrap !important;
   }
+
+  /* Agenda y Calendario Mensual */
+  .calendar-grid-container {
+    overflow-x: auto !important;
+    padding-bottom: 12px !important;
+  }
+  .calendar-7col-grid {
+    min-width: 680px !important;
+  }
+  .agenda-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 16px !important;
+    gap: 14px !important;
+  }
+  .agenda-item > div:first-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .agenda-item > div:first-child > div:first-child {
+    border-right: none !important;
+    border-bottom: 2px solid var(--border-dark) !important;
+    padding-right: 0 !important;
+    padding-bottom: 10px !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .agenda-item > div:last-child {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  /* Kanban Expedientes */
+  .kanban-columns-container {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    padding-bottom: 20px !important;
+    height: auto !important;
+  }
+  .kanban-columns-container > div {
+    min-width: 85% !important;
+    flex-shrink: 0 !important;
+    scroll-snap-align: start !important;
+    margin-right: 16px !important;
+    height: auto !important;
+    max-height: 550px !important;
+  }
+
+  /* Asistente IA FabricaProyectos */
+  .fabrica-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .fabrica-right-col {
+    height: auto !important;
+    max-height: 550px !important;
+  }
+
+  /* Gestor Territorial */
+  .gestor-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .gestor-right-col {
+    height: auto !important;
+    max-height: 550px !important;
+  }
+  .reclamo-item-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  /* Botonera Tactica */
+  .botonera-grid, .directorio-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
 }

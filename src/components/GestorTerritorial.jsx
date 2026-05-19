@@ -13,6 +13,7 @@ export default function GestorTerritorial() {
   const [reclamosGuardados, setReclamosGuardados] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [enviado, setEnviado] = useState(false);
+  const [busquedaTerritorio, setBusquedaTerritorio] = useState('');
 
   // Estado y funciones para Edición y Eliminación
   const [reclamoEditando, setReclamoEditando] = useState(null);
@@ -135,7 +136,7 @@ export default function GestorTerritorial() {
       </div>
 
       {/* Contenedor Principal Dividido en 2 Columnas */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px', flexGrow: 1 }}>
+      <div className="gestor-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px', flexGrow: 1 }}>
         
         {/* Columna Izquierda: Formulario de Captura Rápida */}
         <form onSubmit={guardarReclamo} style={{ background: '#ffffff', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -206,7 +207,7 @@ export default function GestorTerritorial() {
         </form>
 
         {/* Columna Derecha: Reclamos Recientes */}
-        <div style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
+        <div className="gestor-right-col" style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
               <Users size={20} color="var(--accent-lime)" /> RECLAMOS RECIENTES
@@ -216,8 +217,31 @@ export default function GestorTerritorial() {
             </span>
           </div>
 
+          {/* Barra de Búsqueda Territorial */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '10px', padding: '6px 14px', boxShadow: '2px 2px 0px #171717' }}>
+            <span style={{ fontSize: '1.1rem' }}>🔍</span>
+            <input 
+              type="text" 
+              placeholder="Buscar por barrio, vecino, teléfono o detalle..."
+              value={busquedaTerritorio}
+              onChange={e => setBusquedaTerritorio(e.target.value)}
+              style={{ flex: 1, border: 'none', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-main)', background: 'transparent' }}
+            />
+            {busquedaTerritorio && (
+              <button onClick={() => setBusquedaTerritorio('')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ LIMPIAR ]</button>
+            )}
+          </div>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', flexGrow: 1, paddingRight: '4px' }}>
-            {reclamosGuardados.map((rec) => (
+            {reclamosGuardados.filter(rec => {
+              if (!busquedaTerritorio) return true;
+              const term = busquedaTerritorio.toLowerCase();
+              return (rec.barrio?.toLowerCase().includes(term) ||
+                      rec.vecino?.toLowerCase().includes(term) ||
+                      rec.tel?.toLowerCase().includes(term) ||
+                      rec.telefono?.toLowerCase().includes(term) ||
+                      rec.detalle?.toLowerCase().includes(term));
+            }).map((rec) => (
               reclamoEditando === rec.id ? (
                 <form 
                   key={`edit-${rec.id}`}
@@ -304,7 +328,7 @@ export default function GestorTerritorial() {
                     {rec.detalle}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-subtle)', borderTop: '2px solid rgba(0,0,0,0.1)', paddingTop: '12px', marginTop: '2px' }}>
+                  <div className="reclamo-item-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-subtle)', borderTop: '2px solid rgba(0,0,0,0.1)', paddingTop: '12px', marginTop: '2px' }}>
                     <div style={{ display: 'flex', gap: '16px' }}>
                       <span>REFERENTE: <strong style={{ color: 'var(--text-main)' }}>{rec.vecino}</strong></span>
                       <span>TEL: <strong style={{ color: 'var(--text-main)' }}>{rec.tel || rec.telefono}</strong></span>

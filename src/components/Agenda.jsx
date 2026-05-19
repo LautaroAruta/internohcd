@@ -327,90 +327,92 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         </div>
 
         {/* Nombres de los Días de la Semana */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-muted)' }}>
-          <div>DOM</div>
-          <div>LUN</div>
-          <div>MAR</div>
-          <div>MIE</div>
-          <div>JUE</div>
-          <div>VIE</div>
-          <div>SAB</div>
-        </div>
+        <div className="calendar-grid-container" style={{ overflowX: 'auto', paddingBottom: '12px' }}>
+          <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', minWidth: '680px', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-muted)' }}>
+            <div>DOM</div>
+            <div>LUN</div>
+            <div>MAR</div>
+            <div>MIE</div>
+            <div>JUE</div>
+            <div>VIE</div>
+            <div>SAB</div>
+          </div>
 
-        {/* Grilla de Días del Mes */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
-          {diasMes.map((obj, index) => {
-            if (!obj) {
-              return <div key={`empty-${index}`} style={{ background: '#f9f9f9', border: '1px dashed #ccc', borderRadius: '10px', minHeight: '80px' }} />;
-            }
+          {/* Grilla de Días del Mes */}
+          <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', minWidth: '680px', marginTop: '8px' }}>
+            {diasMes.map((obj, index) => {
+              if (!obj) {
+                return <div key={`empty-${index}`} style={{ background: '#f9f9f9', border: '1px dashed #ccc', borderRadius: '10px', minHeight: '80px' }} />;
+              }
 
-            const isSeleccionado = diaSeleccionado === obj.fechaStr;
-            const eventosDelDia = eventos.filter(ev => ev.fecha === obj.fechaStr);
+              const isSeleccionado = diaSeleccionado === obj.fechaStr;
+              const eventosDelDia = eventos.filter(ev => ev.fecha === obj.fechaStr);
 
-            return (
-              <div 
-                key={obj.fechaStr} 
-                onClick={() => setDiaSeleccionado(isSeleccionado ? null : obj.fechaStr)}
-                style={{ 
-                  background: isSeleccionado ? '#171717' : '#ffffff', 
-                  border: isSeleccionado ? '2px solid #171717' : '2px solid var(--border-dark)', 
-                  borderRadius: '10px', 
-                  padding: '8px', 
-                  minHeight: '90px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  gap: '4px',
-                  cursor: 'pointer',
-                  boxShadow: isSeleccionado ? 'none' : '2px 2px 0px #171717',
-                  transition: 'all 0.1s',
-                  transform: isSeleccionado ? 'translate(2px, 2px)' : 'none'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: isSeleccionado ? '#ffffff' : 'var(--text-main)' }}>
-                    {obj.dia}
-                  </span>
-                  {eventosDelDia.length > 0 && (
-                    <span style={{ background: 'var(--accent-cyan)', color: '#171717', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-mono)', border: '1px solid #171717' }}>
-                      {eventosDelDia.length}
+              return (
+                <div 
+                  key={obj.fechaStr} 
+                  onClick={() => setDiaSeleccionado(isSeleccionado ? null : obj.fechaStr)}
+                  style={{ 
+                    background: isSeleccionado ? '#171717' : '#ffffff', 
+                    border: isSeleccionado ? '2px solid #171717' : '2px solid var(--border-dark)', 
+                    borderRadius: '10px', 
+                    padding: '8px', 
+                    minHeight: '90px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '4px',
+                    cursor: 'pointer',
+                    boxShadow: isSeleccionado ? 'none' : '2px 2px 0px #171717',
+                    transition: 'all 0.1s',
+                    transform: isSeleccionado ? 'translate(2px, 2px)' : 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: isSeleccionado ? '#ffffff' : 'var(--text-main)' }}>
+                      {obj.dia}
                     </span>
-                  )}
-                </div>
+                    {eventosDelDia.length > 0 && (
+                      <span style={{ background: 'var(--accent-cyan)', color: '#171717', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-mono)', border: '1px solid #171717' }}>
+                        {eventosDelDia.length}
+                      </span>
+                    )}
+                  </div>
 
-                {/* Lista de Píldoras de Eventos en el Día */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px', overflow: 'hidden' }}>
-                  {eventosDelDia.map(ev => {
-                    let bgPill = '#e5e5e5';
-                    if (ev.tipo === 'sesion') bgPill = 'var(--accent-cyan)';
-                    if (ev.tipo === 'comision') bgPill = 'var(--accent-orange)';
-                    if (ev.tipo === 'territorio') bgPill = 'var(--accent-lime)';
+                  {/* Lista de Píldoras de Eventos en el Día */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px', overflow: 'hidden' }}>
+                    {eventosDelDia.map(ev => {
+                      let bgPill = '#e5e5e5';
+                      if (ev.tipo === 'sesion') bgPill = 'var(--accent-cyan)';
+                      if (ev.tipo === 'comision') bgPill = 'var(--accent-orange)';
+                      if (ev.tipo === 'territorio') bgPill = 'var(--accent-lime)';
 
-                    return (
-                      <div 
-                        key={ev.id} 
-                        style={{ 
-                          background: bgPill, 
-                          border: '1px solid var(--border-dark)', 
-                          padding: '2px 4px', 
-                          borderRadius: '4px', 
-                          fontSize: '0.65rem', 
-                          fontWeight: '800', 
-                          fontFamily: 'var(--font-mono)',
-                          color: '#171717', 
-                          whiteSpace: 'nowrap', 
-                          overflow: 'hidden', 
-                          textOverflow: 'ellipsis' 
-                        }}
-                        title={ev.titulo}
-                      >
-                        {ev.hora.replace(' hs', '')} {ev.titulo}
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div 
+                          key={ev.id} 
+                          style={{ 
+                            background: bgPill, 
+                            border: '1px solid var(--border-dark)', 
+                            padding: '2px 4px', 
+                            borderRadius: '4px', 
+                            fontSize: '0.65rem', 
+                            fontWeight: '800', 
+                            fontFamily: 'var(--font-mono)',
+                            color: '#171717', 
+                            whiteSpace: 'nowrap', 
+                            overflow: 'hidden', 
+                            textOverflow: 'ellipsis' 
+                          }}
+                          title={ev.titulo}
+                        >
+                          {ev.hora.replace(' hs', '')} {ev.titulo}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {diaSeleccionado && (
@@ -622,6 +624,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                 ) : (
                   <div 
                     key={evento.id} 
+                    className="agenda-item"
                     style={{ 
                       padding: '20px', 
                       display: 'flex', 

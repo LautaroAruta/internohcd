@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, FileText, MessageSquare, Clock, CheckCircle, ExternalLink, MessageCircle, Plus, Send, Sparkles, Layers, Zap, AlertTriangle, ShieldCheck, FileCheck, FileCode, Play, FileSearch, Terminal, Edit, Check, X, Trash2 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
-export default function TableroZen({ expedientes, eventos }) {
+export default function TableroZen({ expedientes, eventos, setTabActiva }) {
   const [togglePapeles, setTogglePapeles] = useState(false);
   const [toggleMinutas, setToggleMinutas] = useState(true);
+  const [mensajeCopiado, setMensajeCopiado] = useState(false);
   
   const [alertaDia, setAlertaDia] = useState('Obras Públicas se pasó para las 11:30 hs en Sala 2.');
   const [editandoAlerta, setEditandoAlerta] = useState(false);
@@ -751,7 +752,13 @@ export default function TableroZen({ expedientes, eventos }) {
           </a>
 
           <button 
-            onClick={() => alert('Abriendo formulario de reclamo territorial...')}
+            onClick={() => {
+              if (setTabActiva) {
+                setTabActiva('territorio');
+              } else {
+                alert('Módulo territorial activado.');
+              }
+            }}
             style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'var(--text-main)', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
             className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
           >
@@ -764,19 +771,39 @@ export default function TableroZen({ expedientes, eventos }) {
             </div>
           </button>
 
-          <button 
-            onClick={() => alert('Copiando Prompt Maestro Ley 1079 a ChatGPT/Antigravity...')}
-            style={{ background: 'var(--accent-purple)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'white', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
-            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
-          >
-            <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-purple)', boxShadow: '3px 3px 0px #171717' }}>
-              <FileCode size={26} />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '1.15rem', fontWeight: '900', letterSpacing: '-0.02em' }}>Prompt IA</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#fffede', marginTop: '4px', fontWeight: '700' }}>ASISTENTE LEY 1079</span>
-            </div>
-          </button>
+          <div style={{ position: 'relative' }}>
+            <button 
+              onClick={() => {
+                const promptMaestro = `PROMPT MAESTRO // ASISTENTE LEGISLATIVO HCD SAN MARTÍN (MENDOZA)
+Actúa como un Asesor Técnico Legislativo experto en la Ley Orgánica de Municipalidades N° 1079 de la Provincia de Mendoza y el Reglamento Interno del HCD de Gral. San Martín.
+Tus funciones clave son:
+1. Redactar Proyectos de Ordenanza con técnica legislativa impecable (VISTO, CONSIDERANDO y articulado claro).
+2. Formular Pedidos de Informe y Minutas de Comunicación concisos y rigurosos.
+3. Evaluar la viabilidad jurídica y presupuestaria de las iniciativas vecinales.
+
+Por favor, asísteme con el siguiente tema local: `;
+                navigator.clipboard.writeText(promptMaestro);
+                setMensajeCopiado(true);
+                setTimeout(() => setMensajeCopiado(false), 3500);
+              }}
+              style={{ width: '100%', background: 'var(--accent-purple)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'white', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
+              className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
+            >
+              <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-purple)', boxShadow: '3px 3px 0px #171717' }}>
+                <FileCode size={26} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '1.15rem', fontWeight: '900', letterSpacing: '-0.02em' }}>Prompt IA</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#fffede', marginTop: '4px', fontWeight: '700' }}>ASISTENTE LEY 1079</span>
+              </div>
+            </button>
+
+            {mensajeCopiado && (
+              <div className="animate-fade-in" style={{ position: 'absolute', bottom: 'calc(100% + 12px)', left: 0, right: 0, background: '#171717', color: 'var(--accent-lime)', border: '2px solid var(--accent-lime)', padding: '12px 16px', borderRadius: '12px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', textAlign: 'center', boxShadow: '4px 4px 0px var(--accent-lime)', zIndex: 100 }}>
+                ✓ ¡PROMPT MAESTRO LEY 1079 COPIADO AL PORTAPAPELES!
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

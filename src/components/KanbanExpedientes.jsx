@@ -7,6 +7,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
   const [nuevoExpediente, setNuevoExpediente] = useState({ titulo: '', tipo: 'Ordenanza', comision: 'Obras Públicas', estado: 'Borrador / Redacción', responsable: 'Asesor Técnico', archivoNombre: '', archivoContenido: '' });
   const [mostrarForm, setMostrarForm] = useState(false);
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
 
   // Estado y funciones para Edición y Eliminación de Expedientes
   const [expedienteEditando, setExpedienteEditando] = useState(null);
@@ -128,6 +129,21 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
         </button>
       </div>
 
+      {/* Barra de Búsqueda Rápida */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '12px', padding: '8px 16px', boxShadow: '3px 3px 0px #171717' }}>
+        <span style={{ fontSize: '1.2rem' }}>🔍</span>
+        <input 
+          type="text" 
+          placeholder="Buscar expediente por número, título, comisión o responsable..."
+          value={busqueda}
+          onChange={e => setBusqueda(e.target.value)}
+          style={{ flex: 1, border: 'none', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--text-main)', background: 'transparent' }}
+        />
+        {busqueda && (
+          <button onClick={() => setBusqueda('')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ LIMPIAR ]</button>
+        )}
+      </div>
+
       {/* Formulario Nuevo Expediente */}
       {mostrarForm && (
         <form onSubmit={agregarExpediente} style={{ padding: '28px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -225,7 +241,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
       )}
 
       {/* Tablero Kanban (Columnas) */}
-      <div style={{ 
+      <div className="kanban-columns-container" style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', 
         gap: '20px', 
@@ -234,7 +250,16 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
         paddingBottom: '12px' 
       }}>
         {columnas.map((col) => {
-          const expsColumna = expedientes.filter(exp => exp.estado === col.id);
+          const expsColumna = expedientes.filter(exp => {
+            if (exp.estado !== col.id) return false;
+            if (!busqueda) return true;
+            const term = busqueda.toLowerCase();
+            return (exp.numero?.toLowerCase().includes(term) ||
+                    exp.titulo?.toLowerCase().includes(term) ||
+                    exp.comision?.toLowerCase().includes(term) ||
+                    exp.responsable?.toLowerCase().includes(term) ||
+                    exp.iniciador?.toLowerCase().includes(term));
+          });
 
           return (
             <div key={col.id} style={{ 
