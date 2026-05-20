@@ -4,7 +4,17 @@ import { FileText, ArrowRight, CheckCircle, Clock, AlertCircle, FileCode, Plus, 
 import { supabase } from '../supabaseClient';
 
 export default function KanbanExpedientes({ expedientes, setExpedientes }) {
-  const [nuevoExpediente, setNuevoExpediente] = useState({ titulo: '', tipo: 'Ordenanza', comision: 'Obras Públicas', estado: 'Borrador / Redacción', responsable: 'Asesor Técnico', archivoNombre: '', archivoContenido: '' });
+  const [nuevoExpediente, setNuevoExpediente] = useState({ 
+    titulo: '', 
+    tipo: 'Ordenanza', 
+    comision: 'Obras Públicas', 
+    estado: 'Borrador / Redacción', 
+    responsable: 'Asesor Técnico' 
+  });
+  const [archivoFile, setArchivoFile] = useState(null);
+  const [archivoEdicionFile, setArchivoEdicionFile] = useState(null);
+  const [subiendoArchivo, setSubiendoArchivo] = useState(false);
+
   const [mostrarForm, setMostrarForm] = useState(false);
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [busqueda, setBusqueda] = useState('');
@@ -15,34 +25,71 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
     titulo: '',
     tipo: 'Ordenanza',
     comision: 'Obras Públicas',
-    responsable: ''
+    responsable: '',
+    archivoNombre: '',
+    archivoContenido: ''
   });
 
   const iniciarEdicionExp = (exp) => {
     setExpedienteEditando(exp.id);
+    setArchivoEdicionFile(null); // Resetear archivo seleccionado en ediciones previas
     setDatosEdicionExp({
       titulo: exp.titulo || '',
       tipo: exp.tipo || 'Ordenanza',
       comision: exp.comision || 'Obras Públicas',
-      responsable: exp.responsable || exp.iniciador || ''
+      responsable: exp.responsable || exp.iniciador || '',
+      archivoNombre: exp.archivo || '',
+      archivoContenido: exp.archivo_contenido || ''
     });
   };
 
   const guardarEdicionExp = async (e) => {
     e.preventDefault();
+    setSubiendoArchivo(true);
     try {
+      let archivoNombreFinal = datosEdicionExp.archivoNombre;
+      let archivoContenidoFinal = datosEdicionExp.archivoContenido;
+
+      // Si se seleccionó un nuevo archivo en el formulario de edición, subirlo
+      if (archivoEdicionFile) {
+        const fileExt = archivoEdicionFile.name.split('.').pop();
+        const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+        
+        const { data: storageData, error: storageError } = await supabase.storage
+          .from('expedientes')
+          .upload(uniqueFileName, archivoEdicionFile);
+
+        if (storageError) {
+          throw storageError;
+        }
+
+        const { data: publicUrlData } = supabase.storage
+          .from('expedientes')
+          .getPublicUrl(uniqueFileName);
+        
+        archivoNombreFinal = archivoEdicionFile.name;
+        archivoContenidoFinal = publicUrlData.publicUrl;
+      }
+
       const actualizados = {
         titulo: datosEdicionExp.titulo,
         tipo: datosEdicionExp.tipo,
         comision: datosEdicionExp.comision,
         responsable: datosEdicionExp.responsable,
-        iniciador: datosEdicionExp.responsable
+        iniciador: datosEdicionExp.responsable,
+        archivo: archivoNombreFinal,
+        archivo_contenido: archivoContenidoFinal
       };
+
       await supabase.from('expedientes').update(actualizados).eq('id', expedienteEditando);
       setExpedientes(prev => prev.map(exp => exp.id === expedienteEditando ? { ...exp, ...actualizados } : exp));
       setExpedienteEditando(null);
+      setArchivoEdicionFile(null);
     } catch (err) {
       console.error('Error actualizando expediente en Supabase:', err);
+      alert('Error al guardar cambios del expediente: ' + err.message);
+    } finally {
+      setSubiendoArchivo(false);
     }
   };
 
@@ -79,34 +126,67 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
     e.preventDefault();
     if (!nuevoExpediente.titulo) return;
 
-    const nuevoExp = {
-      numero: `EXP-2026-${Math.floor(Math.random() * 900 + 100)}`,
-      titulo: nuevoExpediente.titulo,
-      tipo: nuevoExpediente.tipo,
-      comision: nuevoExpediente.comision,
-      estado: nuevoExpediente.estado,
-      iniciador: nuevoExpediente.responsable,
-      responsable: nuevoExpediente.responsable,
-      fecha: new Date().toLocaleDateString('es-ES'),
-      prioridad: 'Alta',
-      archivo: nuevoExpediente.archivoNombre || (nuevoExpediente.titulo.toLowerCase().replace(/ /g, '_') + '.pdf'),
-      archivo_contenido: nuevoExpediente.archivoContenido || ''
-    };
-
+    setSubiendoArchivo(true);
     try {
+      let archivoNombreFinal = '';
+      let archivoContenidoFinal = '';
+
+      if (archivoFile) {
+        // Subir archivo a Supabase Storage
+        const fileExt = archivoFile.name.split('.').pop();
+        const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+        
+        const { data: storageData, error: storageError } = await supabase.storage
+          .from('expedientes')
+          .upload(uniqueFileName, archivoFile);
+
+        if (storageError) {
+          throw storageError;
+        }
+
+        const { data: publicUrlData } = supabase.storage
+          .from('expedientes')
+          .getPublicUrl(uniqueFileName);
+        
+        archivoNombreFinal = archivoFile.name;
+        archivoContenidoFinal = publicUrlData.publicUrl;
+      } else {
+        // Generar un borrador de texto autogenerado por defecto
+        archivoNombreFinal = nuevoExpediente.titulo.toLowerCase().replace(/ /g, '_') + '.pdf';
+        archivoContenidoFinal = ''; // Se generará visualmente en el visor
+      }
+
+      const nuevoExp = {
+        numero: `EXP-2026-${Math.floor(Math.random() * 900 + 100)}`,
+        titulo: nuevoExpediente.titulo,
+        tipo: nuevoExpediente.tipo,
+        comision: nuevoExpediente.comision,
+        estado: nuevoExpediente.estado,
+        iniciador: nuevoExpediente.responsable,
+        responsable: nuevoExpediente.responsable,
+        fecha: new Date().toLocaleDateString('es-ES'),
+        prioridad: 'Alta',
+        archivo: archivoNombreFinal,
+        archivo_contenido: archivoContenidoFinal
+      };
+
       const { data, error } = await supabase.from('expedientes').insert([nuevoExp]).select();
       if (data && data[0]) {
         setExpedientes(prev => [...prev, data[0]]);
       } else {
         setExpedientes(prev => [...prev, { ...nuevoExp, id: Date.now() }]);
       }
+
+      // Resetear estados del formulario
+      setNuevoExpediente({ titulo: '', tipo: 'Ordenanza', comision: 'Obras Públicas', estado: 'Borrador / Redacción', responsable: 'Asesor Técnico' });
+      setArchivoFile(null);
+      setMostrarForm(false);
     } catch (err) {
       console.error('Error insertando en Supabase:', err);
-      setExpedientes(prev => [...prev, { ...nuevoExp, id: Date.now() }]);
+      alert('Error al agregar el expediente: ' + err.message);
+    } finally {
+      setSubiendoArchivo(false);
     }
-
-    setNuevoExpediente({ titulo: '', tipo: 'Ordenanza', comision: 'Obras Públicas', estado: 'Borrador / Redacción', responsable: 'Asesor Técnico', archivoNombre: '', archivoContenido: '' });
-    setMostrarForm(false);
   };
 
   return (
@@ -212,30 +292,23 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
               accept=".doc,.docx,.pdf"
               onChange={e => {
                 if (e.target.files && e.target.files[0]) {
-                  const file = e.target.files[0];
-                  const reader = new FileReader();
-                  reader.onload = (event) => {
-                    setNuevoExpediente({
-                      ...nuevoExpediente, 
-                      archivoNombre: file.name,
-                      archivoContenido: event.target.result
-                    });
-                  };
-                  reader.readAsDataURL(file);
+                  setArchivoFile(e.target.files[0]);
                 }
               }}
               style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--text-muted)', cursor: 'pointer' }}
             />
-            {nuevoExpediente.archivoNombre && (
+            {archivoFile && (
               <div style={{ fontSize: '0.85rem', color: 'var(--accent-orange)', fontWeight: '800', fontFamily: 'var(--font-mono)' }}>
-                ✓ Archivo seleccionado listo para cargar en Supabase: {nuevoExpediente.archivoNombre}
+                ✓ Archivo seleccionado: {archivoFile.name} ({(archivoFile.size / 1024 / 1024).toFixed(2)} MB)
               </div>
             )}
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '8px' }}>
-            <button type="button" className="btn-mechanical" onClick={() => setMostrarForm(false)}>CANCELAR</button>
-            <button type="submit" className="btn-mechanical btn-lime">GUARDAR EN SUPABASE</button>
+            <button type="button" className="btn-mechanical" onClick={() => setMostrarForm(false)} disabled={subiendoArchivo}>CANCELAR</button>
+            <button type="submit" className="btn-mechanical btn-lime" disabled={subiendoArchivo}>
+              {subiendoArchivo ? '⏳ SUBIENDO ARCHIVO...' : 'GUARDAR EN SUPABASE'}
+            </button>
           </div>
         </form>
       )}
@@ -341,12 +414,33 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
                           value={datosEdicionExp.responsable} 
                           onChange={e => setDatosEdicionExp({...datosEdicionExp, responsable: e.target.value})} 
                         />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', background: '#f5f5f5', padding: '8px', borderRadius: '8px', border: '1px dashed var(--accent-cyan)' }}>
+                          <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: '800', color: 'var(--text-main)' }}>
+                            {datosEdicionExp.archivoNombre ? `📄 Reemplazar: ${datosEdicionExp.archivoNombre}` : '📎 Adjuntar Archivo Word/PDF:'}
+                          </label>
+                          <input 
+                            type="file" 
+                            accept=".doc,.docx,.pdf"
+                            onChange={e => {
+                              if (e.target.files && e.target.files[0]) {
+                                setArchivoEdicionFile(e.target.files[0]);
+                              }
+                            }}
+                            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', cursor: 'pointer' }}
+                            disabled={subiendoArchivo}
+                          />
+                          {archivoEdicionFile && (
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--accent-orange)', fontWeight: '800' }}>
+                              ✓ Reemplazo: {archivoEdicionFile.name} ({(archivoEdicionFile.size / 1024 / 1024).toFixed(2)} MB)
+                            </span>
+                          )}
+                        </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                          <button type="button" className="btn-mechanical" style={{ padding: '4px 8px', fontSize: '0.75rem' }} onClick={() => setExpedienteEditando(null)}>
+                          <button type="button" className="btn-mechanical" style={{ padding: '4px 8px', fontSize: '0.75rem' }} onClick={() => setExpedienteEditando(null)} disabled={subiendoArchivo}>
                             <X size={14} />
                           </button>
-                          <button type="submit" className="btn-mechanical btn-lime" style={{ padding: '4px 8px', fontSize: '0.75rem' }}>
-                            <Check size={14} /> GUARDAR
+                          <button type="submit" className="btn-mechanical btn-lime" style={{ padding: '4px 8px', fontSize: '0.75rem' }} disabled={subiendoArchivo}>
+                            {subiendoArchivo ? '⏳ Subiendo...' : <><Check size={14} /> GUARDAR</>}
                           </button>
                         </div>
                       </form>
@@ -553,71 +647,122 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
               </div>
             </div>
 
-            {/* Vista Previa del Documento (Simulador de Papel Oficial) */}
-            <div style={{ padding: '28px', overflowY: 'auto', flexGrow: 1, background: '#e5e5e5', display: 'flex', justifyContent: 'center' }}>
-              <div id="documento-papel-oficial" style={{
-                background: '#ffffff',
-                padding: '40px 48px',
-                borderRadius: '8px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                width: '100%',
-                maxWidth: '620px',
-                minHeight: '400px',
-                fontFamily: 'serif',
-                color: '#111111',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px',
-                border: '1px solid #cccccc'
-              }}>
-                {/* Membrete HCD */}
-                <div style={{ borderBottom: '2px solid #333333', paddingBottom: '16px', textAlign: 'center' }}>
-                  <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-mono)', fontWeight: '800', letterSpacing: '0.05em' }}>HONORABLE CONCEJO DELIBERANTE</h4>
-                  <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: '#666666' }}>MUNICIPALIDAD DE Gral. SAN MARTÍN - MENDOZA</p>
+            {/* Vista Previa del Documento */}
+            <div style={{ padding: '28px', overflowY: 'auto', flexGrow: 1, background: '#e5e5e5', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              {archivoSeleccionado.archivo_contenido && 
+               archivoSeleccionado.archivo_contenido.startsWith('http') && 
+               archivoSeleccionado.archivo_contenido.toLowerCase().endsWith('.pdf') ? (
+                <div style={{ width: '100%', height: '550px', background: '#ffffff', border: '1px solid #cccccc', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+                  <iframe 
+                    src={`${archivoSeleccionado.archivo_contenido}#toolbar=1`}
+                    title="Visor PDF de Supabase Storage"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 'none' }}
+                  />
                 </div>
-
-                {/* Contenido del Borrador */}
-                <div>
-                  <h3 style={{ textAlign: 'center', fontSize: '1.3rem', textDecoration: 'underline', marginBottom: '24px' }}>
-                    PROYECTO DE {(archivoSeleccionado.tipo || 'Ordenanza').toUpperCase()}
-                  </h3>
-                  
-                  <p style={{ lineHeight: 1.6, textAlign: 'justify', marginBottom: '16px' }}>
-                    <strong>VISTO:</strong> Las necesidades de los vecinos del departamento de Gral. San Martín en relación a la solicitud de <em>"{archivoSeleccionado.titulo || 'Sin Título'}"</em> tramitada bajo la órbita de la <strong>{archivoSeleccionado.comision || 'Obras Públicas'}</strong>, y;
-                  </p>
-
-                  <p style={{ lineHeight: 1.6, textAlign: 'justify', marginBottom: '16px' }}>
-                    <strong>CONSIDERANDO:</strong> Que es deber de este Honorable Cuerpo legislar para garantizar el bienestar, la seguridad y el desarrollo de la comunidad, atendiendo los reclamos ingresados por los asesores técnicos y concejales en el presente periodo legislativo.
-                  </p>
-
-                  <p style={{ lineHeight: 1.6, textAlign: 'justify', marginBottom: '24px' }}>
-                    <strong>POR ELLO:</strong> El Honorable Concejo Deliberante de Gral. San Martín sanciona con fuerza de:
-                  </p>
-
-                  <h4 style={{ textAlign: 'center', fontSize: '1.1rem', marginBottom: '16px' }}>{(archivoSeleccionado.tipo || 'Ordenanza').toUpperCase()}</h4>
-
-                  <p style={{ lineHeight: 1.6, marginBottom: '12px' }}>
-                    <strong>ARTÍCULO 1º.-</strong> Apruébase en todos sus términos la solicitud y ejecución de las obras/acciones correspondientes al expediente <em>"{archivoSeleccionado.titulo || 'Sin Título'}"</em>.
-                  </p>
-
-                  <p style={{ lineHeight: 1.6, marginBottom: '12px' }}>
-                    <strong>ARTÍCULO 2º.-</strong> Gírese copia al Departamento Ejecutivo Municipal para su toma de razón, asignación presupuestaria y posterior ejecución a través de las áreas correspondientes.
-                  </p>
-
-                  <p style={{ lineHeight: 1.6 }}>
-                    <strong>ARTÍCULO 3º.-</strong> Comuníquese, publíquese y archívese.
-                  </p>
-                </div>
-
-                {/* Firma */}
-                <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'flex-end', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#555555' }}>
-                  <div style={{ textAlign: 'center', borderTop: '1px dashed #555555', paddingTop: '8px', width: '200px' }}>
-                    {archivoSeleccionado.responsable || archivoSeleccionado.iniciador || 'Asesor Técnico'}<br />
-                    HCD San Martín
+              ) : archivoSeleccionado.archivo_contenido && 
+                archivoSeleccionado.archivo_contenido.startsWith('http') && 
+                (archivoSeleccionado.archivo_contenido.toLowerCase().endsWith('.docx') || archivoSeleccionado.archivo_contenido.toLowerCase().endsWith('.doc')) ? (
+                <div style={{
+                  background: '#ffffff',
+                  padding: '40px',
+                  borderRadius: '12px',
+                  boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                  width: '100%',
+                  maxWidth: '550px',
+                  textAlign: 'center',
+                  border: '1px solid #cccccc',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px',
+                  alignItems: 'center'
+                }}>
+                  <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+                    <FileText size={36} />
                   </div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>DOCUMENTO WORD ADJUNTO</h4>
+                    <p style={{ margin: '8px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{archivoSeleccionado.archivo}</p>
+                  </div>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-subtle)', lineHeight: 1.5, margin: 0 }}>
+                    La previsualización interactiva directa en pantalla no está disponible para archivos Word. Puede descargarlo y abrirlo en su computadora para revisarlo y editarlo.
+                  </p>
+                  <a 
+                    href={archivoSeleccionado.archivo_contenido} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="btn-mechanical btn-lime"
+                    style={{ padding: '12px 24px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem' }}
+                  >
+                    📥 DESCARGAR DOCUMENTO WORD
+                  </a>
                 </div>
+              ) : (
+                <div id="documento-papel-oficial" style={{
+                  background: '#ffffff',
+                  padding: '40px 48px',
+                  borderRadius: '8px',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                  width: '100%',
+                  maxWidth: '620px',
+                  minHeight: '400px',
+                  fontFamily: 'serif',
+                  color: '#111111',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px',
+                  border: '1px solid #cccccc'
+                }}>
+                  {/* Membrete HCD */}
+                  <div style={{ borderBottom: '2px solid #333333', paddingBottom: '16px', textAlign: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-mono)', fontWeight: '800', letterSpacing: '0.05em' }}>HONORABLE CONCEJO DELIBERANTE</h4>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: '#666666' }}>MUNICIPALIDAD DE Gral. SAN MARTÍN - MENDOZA</p>
+                  </div>
 
-              </div>
+                  {/* Contenido del Borrador */}
+                  <div>
+                    <h3 style={{ textAlign: 'center', fontSize: '1.3rem', textDecoration: 'underline', marginBottom: '24px' }}>
+                      PROYECTO DE {(archivoSeleccionado.tipo || 'Ordenanza').toUpperCase()}
+                    </h3>
+                    
+                    <p style={{ lineHeight: 1.6, textAlign: 'justify', marginBottom: '16px' }}>
+                      <strong>VISTO:</strong> Las necesidades de los vecinos del departamento de Gral. San Martín en relación a la solicitud de <em>"{archivoSeleccionado.titulo || 'Sin Título'}"</em> tramitada bajo la órbita de la <strong>{archivoSeleccionado.comision || 'Obras Públicas'}</strong>, y;
+                    </p>
+
+                    <p style={{ lineHeight: 1.6, textAlign: 'justify', marginBottom: '16px' }}>
+                      <strong>CONSIDERANDO:</strong> Que es deber de este Honorable Cuerpo legislar para garantizar el bienestar, la seguridad y el desarrollo de la comunidad, atendiendo los reclamos ingresados por los asesores técnicos y concejales en el presente periodo legislativo.
+                    </p>
+
+                    <p style={{ lineHeight: 1.6, textAlign: 'justify', marginBottom: '24px' }}>
+                      <strong>POR ELLO:</strong> El Honorable Concejo Deliberante de Gral. San Martín sanciona con fuerza de:
+                    </p>
+
+                    <h4 style={{ textAlign: 'center', fontSize: '1.1rem', marginBottom: '16px' }}>{(archivoSeleccionado.tipo || 'Ordenanza').toUpperCase()}</h4>
+
+                    <p style={{ lineHeight: 1.6, marginBottom: '12px' }}>
+                      <strong>ARTÍCULO 1º.-</strong> Apruébase en todos sus términos la solicitud y ejecución de las obras/acciones correspondientes al expediente <em>"{archivoSeleccionado.titulo || 'Sin Título'}"</em>.
+                    </p>
+
+                    <p style={{ lineHeight: 1.6, marginBottom: '12px' }}>
+                      <strong>ARTÍCULO 2º.-</strong> Gírese copia al Departamento Ejecutivo Municipal para su toma de razón, asignación presupuestaria y posterior ejecución a través de las áreas correspondientes.
+                    </p>
+
+                    <p style={{ lineHeight: 1.6 }}>
+                      <strong>ARTÍCULO 3º.-</strong> Comuníquese, publíquese y archívese.
+                    </p>
+                  </div>
+
+                  {/* Firma */}
+                  <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'flex-end', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#555555' }}>
+                    <div style={{ textAlign: 'center', borderTop: '1px dashed #555555', paddingTop: '8px', width: '200px' }}>
+                      {archivoSeleccionado.responsable || archivoSeleccionado.iniciador || 'Asesor Técnico'}<br />
+                      HCD San Martín
+                    </div>
+                  </div>
+
+                </div>
+              )}
             </div>
 
             {/* Panel de Botones de Descarga y Acciones Reales */}
@@ -632,36 +777,48 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
               gap: '16px'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (archivoSeleccionado.archivo_contenido && archivoSeleccionado.archivo_contenido.startsWith('data:')) {
-                      // Descargar el archivo original exacto cargado en base64
-                      const a = document.createElement('a');
-                      a.href = archivoSeleccionado.archivo_contenido;
-                      a.download = archivoSeleccionado.archivo;
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                    } else {
-                      // Descargar el archivo generado de previsualización
-                      const textoContenido = `HONORABLE CONCEJO DELIBERANTE DE SAN MARTÍN\nEXPEDIENTE: ${archivoSeleccionado.titulo || ''}\nTIPO: ${archivoSeleccionado.tipo || 'Ordenanza'}\nCOMISIÓN: ${archivoSeleccionado.comision || ''}\nRESPONSABLE: ${archivoSeleccionado.responsable || archivoSeleccionado.iniciador || ''}\n\nPROYECTO DE ${(archivoSeleccionado.tipo || 'Ordenanza').toUpperCase()}\n\nVISTO: Las necesidades de los vecinos en relación a "${archivoSeleccionado.titulo || ''}"...\n\nARTÍCULO 1º.- Apruébase en todos sus términos la solicitud...\nARTÍCULO 2º.- Gírese copia al Ejecutivo Municipal...\nARTÍCULO 3º.- Comuníquese, publíquese y archívese.`;
-                      const blob = new Blob([textoContenido], { type: 'text/plain;charset=utf-8' });
-                      const url = URL.createObjectURL(blob);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = archivoSeleccionado.archivo || 'Proyecto_Oficial.pdf';
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                      URL.revokeObjectURL(url);
-                    }
-                  }}
-                  className="btn-mechanical btn-lime"
-                  style={{ padding: '14px 24px', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}
-                >
-                  📥 DESCARGAR ARCHIVO ORIGINAL (SUPABASE)
-                </button>
+                {archivoSeleccionado.archivo_contenido && archivoSeleccionado.archivo_contenido.startsWith('http') ? (
+                  <a
+                    href={archivoSeleccionado.archivo_contenido}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-mechanical btn-lime"
+                    style={{ padding: '14px 24px', fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+                  >
+                    📥 DESCARGAR ARCHIVO DE STORAGE
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (archivoSeleccionado.archivo_contenido && archivoSeleccionado.archivo_contenido.startsWith('data:')) {
+                        // Descargar el archivo original exacto cargado en base64
+                        const a = document.createElement('a');
+                        a.href = archivoSeleccionado.archivo_contenido;
+                        a.download = archivoSeleccionado.archivo;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      } else {
+                        // Descargar el archivo generado de previsualización
+                        const textoContenido = `HONORABLE CONCEJO DELIBERANTE DE SAN MARTÍN\nEXPEDIENTE: ${archivoSeleccionado.titulo || ''}\nTIPO: ${archivoSeleccionado.tipo || 'Ordenanza'}\nCOMISIÓN: ${archivoSeleccionado.comision || ''}\nRESPONSABLE: ${archivoSeleccionado.responsable || archivoSeleccionado.iniciador || ''}\n\nPROYECTO DE ${(archivoSeleccionado.tipo || 'Ordenanza').toUpperCase()}\n\nVISTO: Las necesidades de los vecinos en relación a "${archivoSeleccionado.titulo || ''}"...\n\nARTÍCULO 1º.- Apruébase en todos sus términos la solicitud...\nARTÍCULO 2º.- Gírese copia al Ejecutivo Municipal...\nARTÍCULO 3º.- Comuníquese, publíquese y archívese.`;
+                        const blob = new Blob([textoContenido], { type: 'text/plain;charset=utf-8' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = archivoSeleccionado.archivo || 'Proyecto_Oficial.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                      }
+                    }}
+                    className="btn-mechanical btn-lime"
+                    style={{ padding: '14px 24px', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}
+                  >
+                    📥 DESCARGAR ARCHIVO GENERADO (.TXT)
+                  </button>
+                )}
 
                 <button
                   type="button"
