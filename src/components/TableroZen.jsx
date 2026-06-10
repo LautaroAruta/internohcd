@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, FileText, MessageSquare, Clock, CheckCircle, ExternalLink, MessageCircle, Plus, Send, Sparkles, Layers, Zap, AlertTriangle, ShieldCheck, FileCheck, FileCode, Play, FileSearch, Terminal, Edit, Check, X, Trash2 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
-export default function TableroZen({ expedientes, eventos, setTabActiva }) {
+export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin = false }) {
   const [togglePapeles, setTogglePapeles] = useState(false);
   const [toggleMinutas, setToggleMinutas] = useState(true);
   const [mensajeCopiado, setMensajeCopiado] = useState(false);
@@ -216,7 +216,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva }) {
           <div style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-led-amber)', display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
             <AlertTriangle size={18} className="animate-blink" /> [ ! ] ALERTA DEL DÍA // AVISO IMPORTANTE <span style={{ fontSize: '0.7rem', color: 'var(--text-subtle)', textTransform: 'none', letterSpacing: 'normal' }}>(Sustituye Mensaje Fijado WA)</span>
           </div>
-          {!editandoAlerta && (
+          {esAdmin && !editandoAlerta && (
             <button 
               onClick={() => { setTempAlerta(alertaDia); setEditandoAlerta(true); }}
               style={{ background: '#22', border: '2px solid var(--text-led-amber)', color: 'var(--text-led-amber)', padding: '6px 14px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '2px 2px 0px var(--text-led-amber)' }}
@@ -392,55 +392,56 @@ export default function TableroZen({ expedientes, eventos, setTabActiva }) {
           {togglePapeles && (
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '32px', paddingTop: '32px', borderTop: '3px solid var(--border-dark)' }}>
               
-              {/* Formulario Mecánico de Ingreso de Papel / Orden del Día */}
-              <form onSubmit={agregarPapel} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: '#ffffff', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717' }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <FileCheck size={18} /> ✍️ AGREGAR ORDEN DEL DÍA / DOCUMENTO OFICIAL:
-                </div>
-                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 220px 120px', gap: '18px', alignItems: 'center' }}>
-                  <input 
-                    type="text" 
-                    placeholder="TÍTULO / DESCRIPCIÓN (EJ: Orden del Día Sesión 20.pdf)" 
-                    className="input-hardware" 
-                    style={{ padding: '14px 18px', fontSize: '0.95rem' }}
-                    value={nuevoPapel.titulo}
-                    onChange={e => setNuevoPapel({...nuevoPapel, titulo: e.target.value})}
-                    required
-                  />
-                  <select 
-                    className="input-hardware" 
-                    style={{ padding: '14px 18px', fontSize: '0.95rem' }}
-                    value={nuevoPapel.tipo}
-                    onChange={e => {
-                      const t = e.target.value;
-                      let ic = nuevoPapel.icono;
-                      if (t === 'PDF Oficial') ic = '📄';
-                      if (t === 'Borrador Word') ic = '📝';
-                      if (t === 'Normativa') ic = '🏛️';
-                      if (t === 'Decreto') ic = '📜';
-                      setNuevoPapel({...nuevoPapel, tipo: t, icono: ic});
-                    }}
-                  >
-                    <option value="PDF Oficial">📄 PDF Oficial</option>
-                    <option value="Borrador Word">📝 Borrador Word</option>
-                    <option value="Normativa">🏛️ Normativa</option>
-                    <option value="Decreto">📜 Decreto</option>
-                  </select>
-                  <input 
-                    type="text" 
-                    placeholder="ICONO (📄)" 
-                    className="input-hardware" 
-                    style={{ padding: '14px 18px', fontSize: '0.95rem', textAlign: 'center' }}
-                    value={nuevoPapel.icono}
-                    onChange={e => setNuevoPapel({...nuevoPapel, icono: e.target.value})}
-                  />
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button type="submit" className="btn-mechanical btn-cyan" style={{ padding: '14px 32px', borderRadius: '10px' }}>
-                    <Plus size={20} /> AGREGAR DOCUMENTO
-                  </button>
-                </div>
-              </form>
+              {esAdmin && (
+                <form onSubmit={agregarPapel} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: '#ffffff', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <FileCheck size={18} /> ✍️ AGREGAR ORDEN DEL DÍA / DOCUMENTO OFICIAL:
+                  </div>
+                  <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 220px 120px', gap: '18px', alignItems: 'center' }}>
+                    <input 
+                      type="text" 
+                      placeholder="TÍTULO / DESCRIPCIÓN (EJ: Orden del Día Sesión 20.pdf)" 
+                      className="input-hardware" 
+                      style={{ padding: '14px 18px', fontSize: '0.95rem' }}
+                      value={nuevoPapel.titulo}
+                      onChange={e => setNuevoPapel({...nuevoPapel, titulo: e.target.value})}
+                      required
+                    />
+                    <select 
+                      className="input-hardware" 
+                      style={{ padding: '14px 18px', fontSize: '0.95rem' }}
+                      value={nuevoPapel.tipo}
+                      onChange={e => {
+                        const t = e.target.value;
+                        let ic = nuevoPapel.icono;
+                        if (t === 'PDF Oficial') ic = '📄';
+                        if (t === 'Borrador Word') ic = '📝';
+                        if (t === 'Normativa') ic = '🏛️';
+                        if (t === 'Decreto') ic = '📜';
+                        setNuevoPapel({...nuevoPapel, tipo: t, icono: ic});
+                      }}
+                    >
+                      <option value="PDF Oficial">📄 PDF Oficial</option>
+                      <option value="Borrador Word">📝 Borrador Word</option>
+                      <option value="Normativa">🏛️ Normativa</option>
+                      <option value="Decreto">📜 Decreto</option>
+                    </select>
+                    <input 
+                      type="text" 
+                      placeholder="ICONO (📄)" 
+                      className="input-hardware" 
+                      style={{ padding: '14px 18px', fontSize: '0.95rem', textAlign: 'center' }}
+                      value={nuevoPapel.icono}
+                      onChange={e => setNuevoPapel({...nuevoPapel, icono: e.target.value})}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button type="submit" className="btn-mechanical btn-cyan" style={{ padding: '14px 32px', borderRadius: '10px' }}>
+                      <Plus size={20} /> AGREGAR DOCUMENTO
+                    </button>
+                  </div>
+                </form>
+              )}
 
               {/* Feed de Papeles */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
@@ -535,22 +536,26 @@ export default function TableroZen({ expedientes, eventos, setTabActiva }) {
                         >
                           Abrir // Descargar
                         </button>
-                        <button 
-                          type="button" 
-                          onClick={() => iniciarEdicionPapel(p)}
-                          className="btn-mini-mech edit"
-                          title="Editar documento"
-                        >
-                          <Edit size={14} /> EDITAR
-                        </button>
-                        <button 
-                          type="button" 
-                          onClick={() => eliminarPapel(p.id)}
-                          className="btn-mini-mech delete"
-                          title="Eliminar documento"
-                        >
-                          <Trash2 size={14} /> BORRAR
-                        </button>
+                        {esAdmin && (
+                          <>
+                            <button 
+                              type="button" 
+                              onClick={() => iniciarEdicionPapel(p)}
+                              className="btn-mini-mech edit"
+                              title="Editar documento"
+                            >
+                              <Edit size={14} /> EDITAR
+                            </button>
+                            <button 
+                              type="button" 
+                              onClick={() => eliminarPapel(p.id)}
+                              className="btn-mini-mech delete"
+                              title="Eliminar documento"
+                            >
+                              <Trash2 size={14} /> BORRAR
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   )
@@ -595,44 +600,45 @@ export default function TableroZen({ expedientes, eventos, setTabActiva }) {
           {toggleMinutas && (
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '32px', paddingTop: '32px', borderTop: '3px solid var(--border-dark)' }}>
               
-              {/* Formulario Mecánico de Ingreso */}
-              <form onSubmit={agregarMinuta} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: '#ffffff', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717' }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Terminal size={18} /> ✍️ INGRESO DE MINUTA RÁPIDA AL SALIR DE COMISIÓN:
-                </div>
-                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '18px' }}>
-                  <input 
-                    type="text" 
-                    placeholder="COMISIÓN (EJ: HACIENDA)" 
-                    className="input-hardware" 
-                    style={{ padding: '14px 18px', fontSize: '0.95rem' }}
-                    value={nuevaMinuta.comision}
-                    onChange={e => setNuevaMinuta({...nuevaMinuta, comision: e.target.value})}
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="AUTOR" 
-                    className="input-hardware" 
-                    style={{ padding: '14px 18px', fontSize: '0.95rem' }}
-                    value={nuevaMinuta.autor}
-                    onChange={e => setNuevaMinuta({...nuevaMinuta, autor: e.target.value})}
-                  />
-                </div>
-                <div style={{ display: 'flex', gap: '18px' }}>
-                  <input 
-                    type="text" 
-                    placeholder="RESUMEN (EJ: LA OPOSICIÓN NO DIO QUÓRUM POR EL ART 4...)" 
-                    className="input-hardware" 
-                    style={{ padding: '14px 18px', fontSize: '0.95rem' }}
-                    value={nuevaMinuta.texto}
-                    onChange={e => setNuevaMinuta({...nuevaMinuta, texto: e.target.value})}
-                    required
-                  />
-                  <button type="submit" className="btn-mechanical btn-lime" style={{ padding: '14px 32px', borderRadius: '10px' }}>
-                    <Send size={20} /> GUARDAR MINUTA
-                  </button>
-                </div>
-              </form>
+              {esAdmin && (
+                <form onSubmit={agregarMinuta} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: '#ffffff', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <Terminal size={18} /> ✍️ INGRESO DE MINUTA RÁPIDA AL SALIR DE COMISIÓN:
+                  </div>
+                  <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '18px' }}>
+                    <input 
+                      type="text" 
+                      placeholder="COMISIÓN (EJ: HACIENDA)" 
+                      className="input-hardware" 
+                      style={{ padding: '14px 18px', fontSize: '0.95rem' }}
+                      value={nuevaMinuta.comision}
+                      onChange={e => setNuevaMinuta({...nuevaMinuta, comision: e.target.value})}
+                    />
+                    <input 
+                      type="text" 
+                      placeholder="AUTOR" 
+                      className="input-hardware" 
+                      style={{ padding: '14px 18px', fontSize: '0.95rem' }}
+                      value={nuevaMinuta.autor}
+                      onChange={e => setNuevaMinuta({...nuevaMinuta, autor: e.target.value})}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', gap: '18px' }}>
+                    <input 
+                      type="text" 
+                      placeholder="RESUMEN (EJ: LA OPOSICIÓN NO DIO QUÓRUM POR EL ART 4...)" 
+                      className="input-hardware" 
+                      style={{ padding: '14px 18px', fontSize: '0.95rem' }}
+                      value={nuevaMinuta.texto}
+                      onChange={e => setNuevaMinuta({...nuevaMinuta, texto: e.target.value})}
+                      required
+                    />
+                    <button type="submit" className="btn-mechanical btn-lime" style={{ padding: '14px 32px', borderRadius: '10px' }}>
+                      <Send size={20} /> GUARDAR MINUTA
+                    </button>
+                  </div>
+                </form>
+              )}
 
               {/* Feed de Minutas */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -687,22 +693,26 @@ export default function TableroZen({ expedientes, eventos, setTabActiva }) {
                         </span>
                         <div className="minuta-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <span style={{ fontFamily: 'var(--font-mono)', background: '#f5f5f5', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>AUTOR: {m.autor}</span>
-                          <button 
-                            type="button" 
-                            onClick={() => iniciarEdicionMinuta(m)}
-                            className="btn-mini-mech edit"
-                            title="Editar minuta"
-                          >
-                            <Edit size={14} /> EDITAR
-                          </button>
-                          <button 
-                            type="button" 
-                            onClick={() => eliminarMinuta(m.id)}
-                            className="btn-mini-mech delete"
-                            title="Eliminar minuta"
-                          >
-                            <Trash2 size={14} /> BORRAR
-                          </button>
+                          {esAdmin && (
+                            <>
+                              <button 
+                                type="button" 
+                                onClick={() => iniciarEdicionMinuta(m)}
+                                className="btn-mini-mech edit"
+                                title="Editar minuta"
+                              >
+                                <Edit size={14} /> EDITAR
+                              </button>
+                              <button 
+                                type="button" 
+                                onClick={() => eliminarMinuta(m.id)}
+                                className="btn-mini-mech delete"
+                                title="Eliminar minuta"
+                              >
+                                <Trash2 size={14} /> BORRAR
+                              </button>
+                            </>
+                          )}
                         </div>
                       </div>
                       <p style={{ fontSize: '1.15rem', color: 'var(--text-main)', margin: 0, lineHeight: 1.5, fontWeight: '700' }}>

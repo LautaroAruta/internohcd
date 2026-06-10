@@ -5,7 +5,7 @@ import FabricaProyectos from './components/FabricaProyectos';
 import BotoneraTactica from './components/BotoneraTactica';
 import GestorTerritorial from './components/GestorTerritorial';
 import Agenda from './components/Agenda';
-import { Shield, Bell, CheckCircle2, Zap, LayoutGrid, Calendar, FolderKanban, Cpu, MapPin, Command, Clock, Disc } from 'lucide-react';
+import { Shield, Bell, CheckCircle2, Zap, LayoutGrid, Calendar, FolderKanban, Cpu, MapPin, Command, Clock, Disc, Lock, Unlock } from 'lucide-react';
 import { supabase } from './supabaseClient';
 
 const ordenarEventos = (lista) => {
@@ -60,6 +60,43 @@ const ordenarEventos = (lista) => {
 export default function App() {
   const [tabActiva, setTabActiva] = useState('zen');
   const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false);
+  const [esAdmin, setEsAdmin] = useState(() => {
+    return localStorage.getItem('hcd_admin_logged') === 'true';
+  });
+  const [mostrarLogin, setMostrarLogin] = useState(false);
+  const [loginUsuario, setLoginUsuario] = useState('');
+  const [loginClave, setLoginClave] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [loginCargando, setLoginCargando] = useState(false);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoginError('');
+    setLoginCargando(true);
+    try {
+      const { data, error } = await supabase.rpc('verificar_admin', { 
+        p_usuario: loginUsuario, 
+        p_clave: loginClave 
+      });
+      
+      if (error) throw error;
+      
+      if (data === true) {
+        setEsAdmin(true);
+        localStorage.setItem('hcd_admin_logged', 'true');
+        setMostrarLogin(false);
+        setLoginUsuario('');
+        setLoginClave('');
+      } else {
+        setLoginError('Usuario o clave incorrectos.');
+      }
+    } catch (err) {
+      console.error('Error en login:', err);
+      setLoginError('Error de conexión o credenciales.');
+    } finally {
+      setLoginCargando(false);
+    }
+  };
   
   const [expedientes, setExpedientes] = useState([
     { id: 1, numero: 'EXP-2026-089', titulo: 'Bacheo y repavimentación Calle Neuquén', iniciador: 'Bloque Oficialista', estado: 'Borrador / Redacción', comision: 'Obras Públicas', fecha: '14/05/2026', prioridad: 'Alta', archivo: 'Borrador_Bacheo_Neuquen.docx', tipo: 'Ordenanza', responsable: 'Bloque Oficialista' },
@@ -135,8 +172,34 @@ export default function App() {
 
 
 
-            {/* Contenedor Relativo para Botón de Alarma y Popup */}
-            <div style={{ position: 'relative' }}>
+            {/* Contenedor Relativo para Botón de Alarma, Login y Popup */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
+              
+              <button
+                onClick={esAdmin ? () => { setEsAdmin(false); localStorage.removeItem('hcd_admin_logged'); } : () => setMostrarLogin(true)}
+                style={{ 
+                  background: esAdmin ? 'var(--accent-orange)' : '#ffffff', 
+                  color: esAdmin ? '#ffffff' : 'var(--text-main)', 
+                  border: '2px solid var(--border-dark)', 
+                  padding: '8px 16px', 
+                  borderRadius: '10px', 
+                  cursor: 'pointer', 
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.8rem',
+                  fontWeight: '800',
+                  boxShadow: esAdmin ? '1px 1px 0px #171717' : '3px 3px 0px #171717', 
+                  transition: 'all 0.1s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#171717] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#171717]"
+                title={esAdmin ? "Cerrar sesión de administrador" : "Iniciar sesión de administrador para editar"}
+              >
+                {esAdmin ? <Unlock size={16} /> : <Lock size={16} />}
+                {esAdmin ? 'ADMIN' : 'LECTOR'}
+              </button>
+
               <button 
                 onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
                 style={{ background: mostrarNotificaciones ? '#171717' : '#ffffff', color: mostrarNotificaciones ? '#ffffff' : 'var(--border-dark)', border: '2px solid var(--border-dark)', padding: '10px', borderRadius: '10px', cursor: 'pointer', boxShadow: mostrarNotificaciones ? '1px 1px 0px #171717' : '3px 3px 0px #171717', transition: 'all 0.1s' }} 
@@ -214,13 +277,63 @@ export default function App() {
 
       {/* CONTENEDOR PRINCIPAL DE MÓDULOS */}
       <main className="app-main-container" style={{ flex: 1, padding: '40px 32px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
-        {tabActiva === 'zen' && <TableroZen expedientes={expedientes} eventos={eventos} setTabActiva={setTabActiva} />}
-        {tabActiva === 'agenda' && <Agenda eventos={eventos} setEventos={setEventos} />}
-        {tabActiva === 'expedientes' && <KanbanExpedientes expedientes={expedientes} setExpedientes={setExpedientes} />}
-        {tabActiva === 'ia' && <FabricaProyectos expedientes={expedientes} setExpedientes={setExpedientes} />}
-        {tabActiva === 'territorio' && <GestorTerritorial expedientes={expedientes} setExpedientes={setExpedientes} />}
+        {tabActiva === 'zen' && <TableroZen expedientes={expedientes} eventos={eventos} setTabActiva={setTabActiva} esAdmin={esAdmin} />}
+        {tabActiva === 'agenda' && <Agenda eventos={eventos} setEventos={setEventos} esAdmin={esAdmin} />}
+        {tabActiva === 'expedientes' && <KanbanExpedientes expedientes={expedientes} setExpedientes={setExpedientes} esAdmin={esAdmin} />}
+        {tabActiva === 'ia' && <FabricaProyectos expedientes={expedientes} setExpedientes={setExpedientes} esAdmin={esAdmin} />}
+        {tabActiva === 'territorio' && <GestorTerritorial expedientes={expedientes} setExpedientes={setExpedientes} esAdmin={esAdmin} />}
         {tabActiva === 'botonera' && <BotoneraTactica />}
       </main>
+
+      {/* MODAL DE INICIO DE SESIÓN DE ADMINISTRACIÓN */}
+      {mostrarLogin && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '20px' }}>
+          <div className="hardware-unit animate-fade-in" style={{ width: '100%', maxWidth: '400px', background: '#ffffff', border: '3px solid var(--border-dark)', borderRadius: '16px', boxShadow: '8px 8px 0px #171717', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border-dark)', paddingBottom: '12px' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: 'var(--text-main)' }}>🔒 ACCESO DE EDICIÓN</span>
+              <button onClick={() => { setMostrarLogin(false); setLoginError(''); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ X ]</button>
+            </div>
+            
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-muted)', marginBottom: '6px' }}>USUARIO</label>
+                <input 
+                  type="text" 
+                  className="input-hardware" 
+                  value={loginUsuario} 
+                  onChange={e => setLoginUsuario(e.target.value)} 
+                  required 
+                  autoFocus
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-muted)', marginBottom: '6px' }}>CONTRASEÑA</label>
+                <input 
+                  type="password" 
+                  className="input-hardware" 
+                  value={loginClave} 
+                  onChange={e => setLoginClave(e.target.value)} 
+                  required 
+                />
+              </div>
+
+              {loginError && (
+                <div style={{ background: '#fef2f2', border: '2px solid var(--accent-red)', color: 'var(--accent-red)', padding: '10px 14px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: '700' }}>
+                  ⚠️ {loginError}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '8px' }}>
+                <button type="button" className="btn-mechanical" onClick={() => { setMostrarLogin(false); setLoginError(''); }}>CANCELAR</button>
+                <button type="submit" className="btn-mechanical btn-orange" disabled={loginCargando}>
+                  {loginCargando ? 'VERIFICANDO...' : 'INGRESAR'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   );

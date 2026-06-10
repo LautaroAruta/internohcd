@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapPin, Send, CheckCircle, Users, MessageSquare, Edit, Trash2, Check, X } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
-export default function GestorTerritorial() {
+export default function GestorTerritorial({ esAdmin = false }) {
   const [reclamo, setReclamo] = useState({
     barrio: 'San Martín (Ciudad / Centro)',
     domicilio: '',
@@ -148,84 +148,86 @@ export default function GestorTerritorial() {
       <div className="gestor-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px', flexGrow: 1 }}>
         
         {/* Columna Izquierda: Formulario de Captura Rápida */}
-        <form onSubmit={guardarReclamo} style={{ background: '#ffffff', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
-            <MessageSquare size={20} color="var(--accent-lime)" /> Nuevo Reclamo en Territorio
-          </h3>
+        {esAdmin && (
+          <form onSubmit={guardarReclamo} style={{ background: '#ffffff', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              <MessageSquare size={20} color="var(--accent-lime)" /> Nuevo Reclamo en Territorio
+            </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DISTRITO</label>
-              <select className="input-hardware" value={reclamo.barrio} onChange={e => setReclamo({...reclamo, barrio: e.target.value})}>
-                {distritosSanMartin.map((b, i) => (
-                  <option key={i} value={b}>{b}</option>
-                ))}
-              </select>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DISTRITO</label>
+                <select className="input-hardware" value={reclamo.barrio} onChange={e => setReclamo({...reclamo, barrio: e.target.value})}>
+                  {distritosSanMartin.map((b, i) => (
+                    <option key={i} value={b}>{b}</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DOMICILIO / BARRIO</label>
+                <input 
+                  type="text" 
+                  className="input-hardware" 
+                  placeholder="Calle, N°, Barrio..." 
+                  value={reclamo.domicilio}
+                  onChange={e => setReclamo({...reclamo, domicilio: e.target.value})}
+                />
+              </div>
             </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>VECINO REFERENTE</label>
+                <input 
+                  type="text" 
+                  className="input-hardware" 
+                  placeholder="Nombre" 
+                  value={reclamo.vecino}
+                  onChange={e => setReclamo({...reclamo, vecino: e.target.value})}
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>TELÉFONO</label>
+                <input 
+                  type="text" 
+                  className="input-hardware" 
+                  placeholder="Móvil" 
+                  value={reclamo.telefono}
+                  onChange={e => setReclamo({...reclamo, telefono: e.target.value})}
+                />
+              </div>
+            </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DOMICILIO / BARRIO</label>
-              <input 
-                type="text" 
+              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>PROBLEMÁTICA / SOLICITUD</label>
+              <textarea 
                 className="input-hardware" 
-                placeholder="Calle, N°, Barrio..." 
-                value={reclamo.domicilio}
-                onChange={e => setReclamo({...reclamo, domicilio: e.target.value})}
+                rows={3} 
+                placeholder="Describa el problema o idea (ej: falta luminaria, bacheo, cloacas...)" 
+                value={reclamo.detalle}
+                onChange={e => setReclamo({...reclamo, detalle: e.target.value})}
+                required
               />
             </div>
-          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>VECINO REFERENTE</label>
-              <input 
-                type="text" 
-                className="input-hardware" 
-                placeholder="Nombre" 
-                value={reclamo.vecino}
-                onChange={e => setReclamo({...reclamo, vecino: e.target.value})}
-              />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>TELÉFONO</label>
-              <input 
-                type="text" 
-                className="input-hardware" 
-                placeholder="Móvil" 
-                value={reclamo.telefono}
-                onChange={e => setReclamo({...reclamo, telefono: e.target.value})}
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>PROBLEMÁTICA / SOLICITUD</label>
-            <textarea 
-              className="input-hardware" 
-              rows={3} 
-              placeholder="Describa el problema o idea (ej: falta luminaria, bacheo, cloacas...)" 
-              value={reclamo.detalle}
-              onChange={e => setReclamo({...reclamo, detalle: e.target.value})}
-              required
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className="btn-mechanical btn-lime" 
-            disabled={enviado}
-            style={{ marginTop: 'auto', padding: '16px', fontSize: '1rem' }}
-          >
-            {enviado ? (
-              <>
-                <CheckCircle size={20} /> RECLAMO REGISTRADO
-              </>
-            ) : (
-              <>
-                <Send size={20} /> REGISTRAR RECLAMO (BUZÓN INTERNO)
-              </>
-            )}
-          </button>
-        </form>
+            <button 
+              type="submit" 
+              className="btn-mechanical btn-lime" 
+              disabled={enviado}
+              style={{ marginTop: 'auto', padding: '16px', fontSize: '1rem' }}
+            >
+              {enviado ? (
+                <>
+                  <CheckCircle size={20} /> RECLAMO REGISTRADO
+                </>
+              ) : (
+                <>
+                  <Send size={20} /> REGISTRAR RECLAMO (BUZÓN INTERNO)
+                </>
+              )}
+            </button>
+          </form>
+        )}
 
         {/* Columna Derecha: Reclamos Recientes */}
         <div className="gestor-right-col" style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
@@ -369,24 +371,26 @@ export default function GestorTerritorial() {
                       <span>REFERENTE: <strong style={{ color: 'var(--text-main)' }}>{rec.vecino}</strong></span>
                       <span>TEL: <strong style={{ color: 'var(--text-main)' }}>{rec.tel || rec.telefono}</strong></span>
                     </div>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <button 
-                        type="button" 
-                        onClick={() => iniciarEdicion(rec)}
-                        className="btn-mini-mech edit"
-                        title="Editar reclamo"
-                      >
-                        <Edit size={14} /> EDITAR
-                      </button>
-                      <button 
-                        type="button" 
-                        onClick={() => eliminarReclamo(rec.id)}
-                        className="btn-mini-mech delete"
-                        title="Eliminar reclamo"
-                      >
-                        <Trash2 size={14} /> BORRAR
-                      </button>
-                    </div>
+                    {esAdmin && (
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button 
+                          type="button" 
+                          onClick={() => iniciarEdicion(rec)}
+                          className="btn-mini-mech edit"
+                          title="Editar reclamo"
+                        >
+                          <Edit size={14} /> EDITAR
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => eliminarReclamo(rec.id)}
+                          className="btn-mini-mech delete"
+                          title="Eliminar reclamo"
+                        >
+                          <Trash2 size={14} /> BORRAR
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )

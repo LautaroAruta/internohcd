@@ -51,7 +51,7 @@ const ordenarEventos = (lista) => {
   });
 };
 
-export default function Agenda({ eventos: propsEventos, setEventos: propsSetEventos }) {
+export default function Agenda({ eventos: propsEventos, setEventos: propsSetEventos, esAdmin = false }) {
   const [localEventos, setLocalEventos] = useState([]);
   const eventos = propsEventos || localEventos;
   const setEventos = propsSetEventos || setLocalEventos;
@@ -254,9 +254,11 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
           </div>
         </div>
 
-        <button className="btn-mechanical btn-cyan" onClick={() => setMostrarForm(!mostrarForm)}>
-          <Plus size={20} /> AGENDAR COMPROMISO
-        </button>
+        {esAdmin && (
+          <button className="btn-mechanical btn-cyan" onClick={() => setMostrarForm(!mostrarForm)}>
+            <Plus size={20} /> AGENDAR COMPROMISO
+          </button>
+        )}
       </div>
 
       {/* Formulario de Nuevo Evento (SIN EL CAMPO ALCANCE) */}
@@ -707,22 +709,26 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                       <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: '800', background: '#f5f5f5', border: '2px solid var(--border-dark)', padding: '6px 14px', borderRadius: '8px', color: 'var(--text-main)', boxShadow: '2px 2px 0px #171717' }}>
                         {evento.tipo === 'sesion' ? '📜 SESIÓN' : evento.tipo === 'comision' ? '🏛️ COMISIÓN' : '📍 TERRITORIO'}
                       </span>
-                      <button 
-                        type="button" 
-                        onClick={() => iniciarEdicion(evento)}
-                        className="btn-mini-mech edit"
-                        title="Editar compromiso"
-                      >
-                        <Edit size={14} /> EDITAR
-                      </button>
-                      <button 
-                        type="button" 
-                        onClick={() => eliminarEvento(evento.id)}
-                        className="btn-mini-mech delete"
-                        title="Eliminar compromiso"
-                      >
-                        <Trash2 size={14} /> BORRAR
-                      </button>
+                      {esAdmin && (
+                        <>
+                          <button 
+                            type="button" 
+                            onClick={() => iniciarEdicion(evento)}
+                            className="btn-mini-mech edit"
+                            title="Editar compromiso"
+                          >
+                            <Edit size={14} /> EDITAR
+                          </button>
+                          <button 
+                            type="button" 
+                            onClick={() => eliminarEvento(evento.id)}
+                            className="btn-mini-mech delete"
+                            title="Eliminar compromiso"
+                          >
+                            <Trash2 size={14} /> BORRAR
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 );

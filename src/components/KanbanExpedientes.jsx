@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { FileText, ArrowRight, CheckCircle, Clock, AlertCircle, FileCode, Plus, Edit, Trash2, Check, X } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
-export default function KanbanExpedientes({ expedientes, setExpedientes }) {
+export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin = false }) {
   const [nuevoExpediente, setNuevoExpediente] = useState({ 
     titulo: '', 
     tipo: 'Ordenanza', 
@@ -204,9 +204,11 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
           </div>
         </div>
 
-        <button className="btn-mechanical btn-orange" onClick={() => setMostrarForm(!mostrarForm)}>
-          <Plus size={20} /> NUEVO EXPEDIENTE
-        </button>
+        {esAdmin && (
+          <button className="btn-mechanical btn-orange" onClick={() => setMostrarForm(!mostrarForm)}>
+            <Plus size={20} /> NUEVO EXPEDIENTE
+          </button>
+        )}
       </div>
 
       {/* Barra de Búsqueda Rápida */}
@@ -500,53 +502,54 @@ export default function KanbanExpedientes({ expedientes, setExpedientes }) {
                             </span>
                           </button>
 
-                          {/* Botonera de Acción y Movimiento */}
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
-                            {/* Editar y Borrar */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <button 
-                                type="button" 
-                                onClick={() => iniciarEdicionExp(exp)}
-                                className="btn-mini-mech edit"
-                                title="Editar expediente"
-                              >
-                                <Edit size={12} /> EDITAR
-                              </button>
-                              <button 
-                                type="button" 
-                                onClick={() => eliminarExpediente(exp.id)}
-                                className="btn-mini-mech delete"
-                                title="Eliminar expediente"
-                                style={{ padding: '6px 10px' }}
-                              >
-                                <Trash2 size={12} />
-                              </button>
-                            </div>
+                          {esAdmin && (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
+                              {/* Editar y Borrar */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <button 
+                                  type="button" 
+                                  onClick={() => iniciarEdicionExp(exp)}
+                                  className="btn-mini-mech edit"
+                                  title="Editar expediente"
+                                >
+                                  <Edit size={12} /> EDITAR
+                                </button>
+                                <button 
+                                  type="button" 
+                                  onClick={() => eliminarExpediente(exp.id)}
+                                  className="btn-mini-mech delete"
+                                  title="Eliminar expediente"
+                                  style={{ padding: '6px 10px' }}
+                                >
+                                  <Trash2 size={12} />
+                                </button>
+                              </div>
 
-                            {/* Controles para mover tarjeta */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              {col.id !== 'Borrador / Redacción' && (
-                                <button 
-                                  type="button"
-                                  onClick={() => moverExpediente(exp.id, col.id === 'En Comisión' ? 'Borrador / Redacción' : col.id === 'Próxima Sesión' ? 'En Comisión' : 'Próxima Sesión')}
-                                  style={{ background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px #171717' }}
-                                  title="Mover a etapa anterior"
-                                >
-                                  ◀
-                                </button>
-                              )}
-                              {col.id !== 'Aprobados' && (
-                                <button 
-                                  type="button"
-                                  onClick={() => moverExpediente(exp.id, col.id === 'Borrador / Redacción' ? 'En Comisión' : col.id === 'En Comisión' ? 'Próxima Sesión' : 'Aprobados')}
-                                  style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px #171717' }}
-                                  title="Mover a siguiente etapa"
-                                >
-                                  ▶
-                                </button>
-                              )}
+                              {/* Controles para mover tarjeta */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                {col.id !== 'Borrador / Redacción' && (
+                                  <button 
+                                    type="button"
+                                    onClick={() => moverExpediente(exp.id, col.id === 'En Comisión' ? 'Borrador / Redacción' : col.id === 'Próxima Sesión' ? 'En Comisión' : 'Próxima Sesión')}
+                                    style={{ background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px #171717' }}
+                                    title="Mover a etapa anterior"
+                                  >
+                                    ◀
+                                  </button>
+                                )}
+                                {col.id !== 'Aprobados' && (
+                                  <button 
+                                    type="button"
+                                    onClick={() => moverExpediente(exp.id, col.id === 'Borrador / Redacción' ? 'En Comisión' : col.id === 'En Comisión' ? 'Próxima Sesión' : 'Aprobados')}
+                                    style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px #171717' }}
+                                    title="Mover a siguiente etapa"
+                                  >
+                                    ▶
+                                  </button>
+                                )}
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
 
                       </div>
