@@ -2,6 +2,55 @@ import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, MapPin, Users, Plus, Filter, ChevronDown, ChevronRight, CalendarDays, AlertCircle, ChevronLeft, Edit, Trash2, Check, X } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
+const ordenarEventos = (lista) => {
+  return [...lista].sort((a, b) => {
+    const fechaA = a.fecha || '';
+    const fechaB = b.fecha || '';
+    
+    const obtenerTimestamp = (fStr) => {
+      if (!fStr) return 0;
+      if (fStr.includes('-')) {
+        const [y, m, d] = fStr.split('-').map(Number);
+        return new Date(y, m - 1, d).getTime();
+      }
+      if (fStr.includes('/')) {
+        const [d, m, y] = fStr.split('/').map(Number);
+        return new Date(y, m - 1, d).getTime();
+      }
+      return new Date(fStr).getTime() || 0;
+    };
+
+    const tsA = obtenerTimestamp(fechaA);
+    const tsB = obtenerTimestamp(fechaB);
+
+    if (tsA !== tsB) {
+      return tsA - tsB;
+    }
+
+    const parsearHora = (h) => {
+      if (!h) return { horas: 99, minutos: 99 };
+      const hLimpia = h.toLowerCase().replace('hs', '').trim();
+      const match = hLimpia.match(/(\d{1,2}):(\d{2})/);
+      if (match) {
+        return { horas: parseInt(match[1], 10), minutos: parseInt(match[2], 10) };
+      }
+      const matchSoloHoras = hLimpia.match(/(\d{1,2})/);
+      if (matchSoloHoras) {
+        return { horas: parseInt(matchSoloHoras[1], 10), minutos: 0 };
+      }
+      return { horas: 99, minutos: 99 };
+    };
+
+    const horaA = parsearHora(a.hora);
+    const horaB = parsearHora(b.hora);
+
+    if (horaA.horas !== horaB.horas) {
+      return horaA.horas - horaB.horas;
+    }
+    return horaA.minutos - horaB.minutos;
+  });
+};
+
 export default function Agenda({ eventos: propsEventos, setEventos: propsSetEventos }) {
   const [localEventos, setLocalEventos] = useState([]);
   const eventos = propsEventos || localEventos;
@@ -68,7 +117,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
       };
 
       await supabase.from('agenda').update(actualizados).eq('id', eventoEditando);
-      setEventos(prev => prev.map(ev => ev.id === eventoEditando ? { ...ev, ...actualizados } : ev).sort((a, b) => a.fecha.localeCompare(b.fecha)));
+      setEventos(prev => ordenarEventos(prev.map(ev => ev.id === eventoEditando ? { ...ev, ...actualizados } : ev)));
       setEventoEditando(null);
     } catch (err) {
       console.error('Error actualizando evento en Supabase:', err);
@@ -91,7 +140,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
       try {
         const { data, error } = await supabase.from('agenda').select('*').order('fecha', { ascending: true });
         if (data) {
-          setEventos(data);
+          setEventos(ordenarEventos(data));
         }
       } catch (err) {
         console.error('Error cargando agenda de Supabase:', err);
@@ -127,13 +176,13 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
     try {
       const { data, error } = await supabase.from('agenda').insert([nuevoEv]).select();
       if (data && data[0]) {
-        setEventos(prev => [...prev, data[0]].sort((a, b) => a.fecha.localeCompare(b.fecha)));
+        setEventos(prev => ordenarEventos([...prev, data[0]]));
       } else {
-        setEventos(prev => [...prev, { ...nuevoEv, id: Date.now() }].sort((a, b) => a.fecha.localeCompare(b.fecha)));
+        setEventos(prev => ordenarEventos([...prev, { ...nuevoEv, id: Date.now() }]));
       }
     } catch (err) {
       console.error('Error insertando en Supabase:', err);
-      setEventos(prev => [...prev, { ...nuevoEv, id: Date.now() }].sort((a, b) => a.fecha.localeCompare(b.fecha)));
+      setEventos(prev => ordenarEventos([...prev, { ...nuevoEv, id: Date.now() }]));
     }
 
     setNuevoEvento({

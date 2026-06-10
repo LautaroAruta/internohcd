@@ -8,6 +8,55 @@ import Agenda from './components/Agenda';
 import { Shield, Bell, CheckCircle2, Zap, LayoutGrid, Calendar, FolderKanban, Cpu, MapPin, Command, Clock, Disc } from 'lucide-react';
 import { supabase } from './supabaseClient';
 
+const ordenarEventos = (lista) => {
+  return [...lista].sort((a, b) => {
+    const fechaA = a.fecha || '';
+    const fechaB = b.fecha || '';
+    
+    const obtenerTimestamp = (fStr) => {
+      if (!fStr) return 0;
+      if (fStr.includes('-')) {
+        const [y, m, d] = fStr.split('-').map(Number);
+        return new Date(y, m - 1, d).getTime();
+      }
+      if (fStr.includes('/')) {
+        const [d, m, y] = fStr.split('/').map(Number);
+        return new Date(y, m - 1, d).getTime();
+      }
+      return new Date(fStr).getTime() || 0;
+    };
+
+    const tsA = obtenerTimestamp(fechaA);
+    const tsB = obtenerTimestamp(fechaB);
+
+    if (tsA !== tsB) {
+      return tsA - tsB;
+    }
+
+    const parsearHora = (h) => {
+      if (!h) return { horas: 99, minutos: 99 };
+      const hLimpia = h.toLowerCase().replace('hs', '').trim();
+      const match = hLimpia.match(/(\d{1,2}):(\d{2})/);
+      if (match) {
+        return { horas: parseInt(match[1], 10), minutos: parseInt(match[2], 10) };
+      }
+      const matchSoloHoras = hLimpia.match(/(\d{1,2})/);
+      if (matchSoloHoras) {
+        return { horas: parseInt(matchSoloHoras[1], 10), minutos: 0 };
+      }
+      return { horas: 99, minutos: 99 };
+    };
+
+    const horaA = parsearHora(a.hora);
+    const horaB = parsearHora(b.hora);
+
+    if (horaA.horas !== horaB.horas) {
+      return horaA.horas - horaB.horas;
+    }
+    return horaA.minutos - horaB.minutos;
+  });
+};
+
 export default function App() {
   const [tabActiva, setTabActiva] = useState('zen');
   const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false);
@@ -45,7 +94,7 @@ export default function App() {
       try {
         const { data, error } = await supabase.from('agenda').select('*').order('fecha', { ascending: true });
         if (data) {
-          setEventos(data);
+          setEventos(ordenarEventos(data));
         }
       } catch (err) {
         console.error('Error fetching agenda from Supabase in App:', err);
