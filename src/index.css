@@ -566,7 +566,8 @@ body {
     padding-bottom: 12px !important;
   }
   .calendar-7col-grid {
-    min-width: 680px !important;
+    min-width: 0 !important;
+    width: 100% !important;
   }
   .agenda-item {
     flex-direction: column !important;
@@ -753,9 +754,9 @@ body {
   .calendar-7col-grid {
     display: grid !important;
     grid-template-columns: repeat(7, 1fr) !important;
-    min-width: 680px !important;
+    min-width: 0 !important;
     gap: 8px !important;
-    width: auto !important;
+    width: 100% !important;
   }
 }
 

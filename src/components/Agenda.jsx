@@ -377,7 +377,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
 
         {/* Nombres de los Días de la Semana */}
         <div className="calendar-grid-container" style={{ overflowX: 'auto', paddingBottom: '12px' }}>
-          <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', minWidth: '680px', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-muted)' }}>
+          <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', width: '100%', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-muted)' }}>
             <div>DOM</div>
             <div>LUN</div>
             <div>MAR</div>
@@ -388,7 +388,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
           </div>
 
           {/* Grilla de Días del Mes */}
-          <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', minWidth: '680px', marginTop: '8px' }}>
+          <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', width: '100%', marginTop: '8px' }}>
             {diasMes.map((obj, index) => {
               if (!obj) {
                 return <div key={`empty-${index}`} style={{ background: '#f9f9f9', border: '1px dashed #ccc', borderRadius: '10px', minHeight: '80px' }} />;
