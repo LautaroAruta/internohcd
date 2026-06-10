@@ -5,7 +5,7 @@ import FabricaProyectos from './components/FabricaProyectos';
 import BotoneraTactica from './components/BotoneraTactica';
 import GestorTerritorial from './components/GestorTerritorial';
 import Agenda from './components/Agenda';
-import { Shield, Bell, CheckCircle2, Zap, LayoutGrid, Calendar, FolderKanban, Cpu, MapPin, Command, Clock, Disc, Lock, Unlock } from 'lucide-react';
+import { Shield, Bell, CheckCircle2, Zap, LayoutGrid, Calendar, FolderKanban, Cpu, MapPin, Command, Clock, Disc, Lock, Unlock, Sun, Moon } from 'lucide-react';
 import { supabase } from './supabaseClient';
 
 const ordenarEventos = (lista) => {
@@ -68,6 +68,19 @@ export default function App() {
   const [loginClave, setLoginClave] = useState('');
   const [loginError, setLoginError] = useState('');
   const [loginCargando, setLoginCargando] = useState(false);
+
+  const [tema, setTema] = useState(() => {
+    return localStorage.getItem('hcd_theme') || 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', tema);
+    localStorage.setItem('hcd_theme', tema);
+  }, [tema]);
+
+  const toggleTema = () => {
+    setTema(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -150,7 +163,7 @@ export default function App() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
       {/* CONSOLA DE CONTROL SUPERIOR (Panel de Hardware en Español) */}
-      <header className="app-header-container" style={{ background: '#f5f5f5', borderBottom: '3px solid var(--border-dark)', padding: '24px 32px', boxShadow: '0 4px 0px #171717', position: 'sticky', top: 0, zIndex: 100 }}>
+      <header className="app-header-container" style={{ background: 'var(--bg-card)', borderBottom: '3px solid var(--border-dark)', padding: '24px 32px', boxShadow: '0 4px 0px var(--border-dark)', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Fila Institucional / Display LED Superior */}
@@ -158,7 +171,7 @@ export default function App() {
             
             {/* Placa de Identificación de Hardware */}
             <div className="app-header-top-row" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ background: 'var(--accent-orange)', color: 'white', border: '2px solid var(--border-dark)', padding: '6px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontWeight: '800', fontSize: '0.85rem', boxShadow: '2px 2px 0px #171717' }}>
+              <div style={{ background: 'var(--accent-orange)', color: 'white', border: '2px solid var(--border-dark)', padding: '6px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontWeight: '800', fontSize: '0.85rem', boxShadow: '2px 2px 0px var(--border-dark)' }}>
                 SISTEMA // HCD SAN MARTÍN
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -175,10 +188,38 @@ export default function App() {
             {/* Contenedor Relativo para Botón de Alarma, Login y Popup */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
               
+              {/* Selector de Modo Oscuro / Claro Táctico (Switch Modular) */}
+              <button
+                onClick={toggleTema}
+                style={{
+                  background: tema === 'dark' ? 'var(--border-dark)' : 'var(--bg-card)',
+                  color: tema === 'dark' ? 'var(--bg-card)' : 'var(--text-main)',
+                  border: '2px solid var(--border-dark)',
+                  padding: '8px 14px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.8rem',
+                  fontWeight: '800',
+                  boxShadow: '3px 3px 0px var(--border-dark)',
+                  transition: 'all 0.1s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_var(--border-dark)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_var(--border-dark)]"
+                title={tema === 'dark' ? "Cambiar a Modo Claro (Matte Grey)" : "Cambiar a Modo Oscuro (High Contrast)"}
+              >
+                {tema === 'dark' ? <Moon size={16} color="var(--accent-yellow)" /> : <Sun size={16} color="var(--accent-orange)" />}
+                <span style={{ fontSize: '0.75rem', fontWeight: '800' }}>
+                  {tema === 'dark' ? 'MODO_OSCURO' : 'MODO_CLARO'}
+                </span>
+              </button>
+
               <button
                 onClick={esAdmin ? () => { setEsAdmin(false); localStorage.removeItem('hcd_admin_logged'); } : () => setMostrarLogin(true)}
                 style={{ 
-                  background: esAdmin ? 'var(--accent-orange)' : '#ffffff', 
+                  background: esAdmin ? 'var(--accent-orange)' : 'var(--bg-card)', 
                   color: esAdmin ? '#ffffff' : 'var(--text-main)', 
                   border: '2px solid var(--border-dark)', 
                   padding: '8px 16px', 
@@ -187,13 +228,13 @@ export default function App() {
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.8rem',
                   fontWeight: '800',
-                  boxShadow: esAdmin ? '1px 1px 0px #171717' : '3px 3px 0px #171717', 
+                  boxShadow: esAdmin ? '1px 1px 0px var(--border-dark)' : '3px 3px 0px var(--border-dark)', 
                   transition: 'all 0.1s',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px'
                 }}
-                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#171717] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#171717]"
+                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_var(--border-dark)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_var(--border-dark)]"
                 title={esAdmin ? "Cerrar sesión de administrador" : "Iniciar sesión de administrador para editar"}
               >
                 {esAdmin ? <Unlock size={16} /> : <Lock size={16} />}
@@ -202,28 +243,28 @@ export default function App() {
 
               <button 
                 onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
-                style={{ background: mostrarNotificaciones ? '#171717' : '#ffffff', color: mostrarNotificaciones ? '#ffffff' : 'var(--border-dark)', border: '2px solid var(--border-dark)', padding: '10px', borderRadius: '10px', cursor: 'pointer', boxShadow: mostrarNotificaciones ? '1px 1px 0px #171717' : '3px 3px 0px #171717', transition: 'all 0.1s' }} 
-                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#171717] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#171717]"
+                style={{ background: mostrarNotificaciones ? 'var(--border-dark)' : 'var(--bg-card)', color: mostrarNotificaciones ? 'var(--bg-card)' : 'var(--border-dark)', border: '2px solid var(--border-dark)', padding: '10px', borderRadius: '10px', cursor: 'pointer', boxShadow: mostrarNotificaciones ? '1px 1px 0px var(--border-dark)' : '3px 3px 0px var(--border-dark)', transition: 'all 0.1s' }} 
+                className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_var(--border-dark)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_var(--border-dark)]"
                 title="Centro de Notificaciones y Registro del Sistema"
               >
                 <Bell size={20} />
               </button>
 
               {mostrarNotificaciones && (
-                <div className="hardware-unit animate-fade-in" style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', width: '340px', background: '#ffffff', border: '3px solid var(--border-dark)', borderRadius: '16px', boxShadow: '8px 8px 0px #171717', zIndex: 1000, padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="hardware-unit animate-fade-in" style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', width: '340px', background: 'var(--bg-card)', border: '3px solid var(--border-dark)', borderRadius: '16px', boxShadow: '8px 8px 0px var(--border-dark)', zIndex: 1000, padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border-dark)', paddingBottom: '12px' }}>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: 'var(--text-main)' }}>🔔 REGISTRO DE EVENTOS</span>
                     <button onClick={() => setMostrarNotificaciones(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ X ]</button>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '300px', overflowY: 'auto' }}>
                     {notificaciones.map(n => (
-                      <div key={n.id} style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '10px 12px', background: '#f9f9f9', border: '1px solid rgba(0,0,0,0.1)', borderLeft: n.tipo === 'warning' ? '6px solid var(--accent-orange)' : n.tipo === 'success' ? '6px solid var(--accent-lime)' : '6px solid var(--accent-cyan)', borderRadius: '8px' }}>
+                      <div key={n.id} style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '10px 12px', background: 'var(--bg-surface)', border: '1px solid rgba(150,150,150,0.15)', borderLeft: n.tipo === 'warning' ? '6px solid var(--accent-orange)' : n.tipo === 'success' ? '6px solid var(--accent-lime)' : '6px solid var(--accent-cyan)', borderRadius: '8px' }}>
                         <span style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>{n.texto}</span>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-subtle)', fontWeight: '700' }}>{n.tiempo}</span>
                       </div>
                     ))}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '10px', fontWeight: '700' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', borderTop: '1px solid rgba(150,150,150,0.15)', paddingTop: '10px', fontWeight: '700' }}>
                     SISTEMA DE MONITOREO HCD SAN MARTÍN
                   </div>
                 </div>
@@ -288,7 +329,7 @@ export default function App() {
       {/* MODAL DE INICIO DE SESIÓN DE ADMINISTRACIÓN */}
       {mostrarLogin && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '20px' }}>
-          <div className="hardware-unit animate-fade-in" style={{ width: '100%', maxWidth: '400px', background: '#ffffff', border: '3px solid var(--border-dark)', borderRadius: '16px', boxShadow: '8px 8px 0px #171717', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="hardware-unit animate-fade-in" style={{ width: '100%', maxWidth: '400px', background: 'var(--bg-card)', border: '3px solid var(--border-dark)', borderRadius: '16px', boxShadow: '8px 8px 0px var(--border-dark)', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border-dark)', paddingBottom: '12px' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: 'var(--text-main)' }}>🔒 ACCESO DE EDICIÓN</span>
               <button onClick={() => { setMostrarLogin(false); setLoginError(''); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ X ]</button>

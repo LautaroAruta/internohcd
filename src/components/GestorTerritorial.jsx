@@ -135,7 +135,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
       
       {/* Encabezado */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '3px 3px 0px #171717' }}>
+        <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
           <MapPin size={26} />
         </div>
         <div>
@@ -149,7 +149,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
         
         {/* Columna Izquierda: Formulario de Captura Rápida */}
         {esAdmin && (
-          <form onSubmit={guardarReclamo} style={{ background: '#ffffff', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <form onSubmit={guardarReclamo} style={{ background: 'var(--bg-card)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
               <MessageSquare size={20} color="var(--accent-lime)" /> Nuevo Reclamo en Territorio
             </h3>
@@ -230,18 +230,18 @@ export default function GestorTerritorial({ esAdmin = false }) {
         )}
 
         {/* Columna Derecha: Reclamos Recientes */}
-        <div className="gestor-right-col" style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
+        <div className="gestor-right-col" style={{ background: 'var(--bg-surface)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
               <Users size={20} color="var(--accent-lime)" /> RECLAMOS RECIENTES
             </h3>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 12px', borderRadius: '8px', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 12px', borderRadius: '8px', fontWeight: '800', boxShadow: '2px 2px 0px var(--border-dark)' }}>
               {reclamosGuardados.length} REGISTRADOS
             </span>
           </div>
 
           {/* Barra de Búsqueda Territorial */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '10px', padding: '6px 14px', boxShadow: '2px 2px 0px #171717' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '10px', padding: '6px 14px', boxShadow: '2px 2px 0px var(--border-dark)' }}>
             <span style={{ fontSize: '1.1rem' }}>🔍</span>
             <input 
               type="text" 
@@ -273,7 +273,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                   className="animate-fade-in"
                   style={{ 
                     padding: '20px', 
-                    background: '#ffffff', 
+                    background: 'var(--bg-card)', 
                     border: '2px solid var(--accent-lime)', 
                     borderRadius: '12px', 
                     display: 'flex', 
@@ -342,14 +342,14 @@ export default function GestorTerritorial({ esAdmin = false }) {
                   className="animate-fade-in" 
                   style={{ 
                     padding: '20px', 
-                    background: '#ffffff', 
+                    background: 'var(--bg-card)', 
                     border: '2px solid var(--border-dark)', 
                     borderRadius: '12px', 
                     display: 'flex', 
                     flexDirection: 'column', 
                     gap: '12px',
                     borderLeft: '8px solid var(--accent-lime)',
-                    boxShadow: '3px 3px 0px #171717'
+                    boxShadow: '3px 3px 0px var(--border-dark)'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -366,7 +366,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                     {rec.detalle}
                   </p>
 
-                  <div className="reclamo-item-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-subtle)', borderTop: '2px solid rgba(0,0,0,0.1)', paddingTop: '12px', marginTop: '2px' }}>
+                  <div className="reclamo-item-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-subtle)', borderTop: '2px solid rgba(150,150,150,0.15)', paddingTop: '12px', marginTop: '2px' }}>
                     <div style={{ display: 'flex', gap: '16px' }}>
                       <span>REFERENTE: <strong style={{ color: 'var(--text-main)' }}>{rec.vecino}</strong></span>
                       <span>TEL: <strong style={{ color: 'var(--text-main)' }}>{rec.tel || rec.telefono}</strong></span>

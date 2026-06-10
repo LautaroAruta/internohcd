@@ -243,7 +243,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
       {/* Encabezado y Botonera Superior */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '3px 3px 0px #171717' }}>
+          <div style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
             <CalendarIcon size={26} />
           </div>
           <div>
@@ -263,7 +263,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
 
       {/* Formulario de Nuevo Evento (SIN EL CAMPO ALCANCE) */}
       {mostrarForm && (
-        <form onSubmit={agregarEvento} className="animate-fade-in" style={{ padding: '28px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={agregarForm || agregarEvento} className="animate-fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>&gt; NUEVO EVENTO EN CALENDARIO</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
@@ -348,7 +348,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
       )}
 
       {/* ESPECTACULAR CALENDARIO MENSUAL VISUAL CON LOS DÍAS */}
-      <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '16px', padding: '24px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', padding: '24px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* Cabecera de Navegación del Calendario */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', borderBottom: '2px solid var(--border-dark)', paddingBottom: '16px' }}>
@@ -363,7 +363,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             {diaSeleccionado && (
               <button 
                 onClick={() => setDiaSeleccionado(null)} 
-                style={{ background: 'var(--accent-yellow)', border: '2px solid var(--border-dark)', padding: '6px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', cursor: 'pointer', boxShadow: '2px 2px 0px #171717' }}
+                style={{ background: 'var(--accent-yellow)', border: '2px solid var(--border-dark)', padding: '6px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', cursor: 'pointer', boxShadow: '2px 2px 0px var(--border-dark)' }}
               >
                 MOSTRAR TODOS LOS DÍAS
               </button>
@@ -393,7 +393,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
           <div className="calendar-7col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '8px', width: '100%', marginTop: '8px' }}>
             {diasMes.map((obj, index) => {
               if (!obj) {
-                return <div key={`empty-${index}`} style={{ background: '#f9f9f9', border: '1px dashed #ccc', borderRadius: '10px', minHeight: '80px' }} />;
+                return <div key={`empty-${index}`} style={{ background: 'var(--bg-surface-hover)', border: '1px dashed var(--text-subtle)', borderRadius: '10px', minHeight: '80px' }} />;
               }
 
               const isSeleccionado = diaSeleccionado === obj.fechaStr;
@@ -404,8 +404,8 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                   key={obj.fechaStr} 
                   onClick={() => setDiaSeleccionado(isSeleccionado ? null : obj.fechaStr)}
                   style={{ 
-                    background: isSeleccionado ? '#171717' : '#ffffff', 
-                    border: isSeleccionado ? '2px solid #171717' : '2px solid var(--border-dark)', 
+                    background: isSeleccionado ? 'var(--border-dark)' : 'var(--bg-card)', 
+                    border: '2px solid var(--border-dark)', 
                     borderRadius: '10px', 
                     padding: '8px', 
                     minHeight: '90px', 
@@ -413,17 +413,17 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                     flexDirection: 'column', 
                     gap: '4px',
                     cursor: 'pointer',
-                    boxShadow: isSeleccionado ? 'none' : '2px 2px 0px #171717',
+                    boxShadow: isSeleccionado ? 'none' : '2px 2px 0px var(--border-dark)',
                     transition: 'all 0.1s',
                     transform: isSeleccionado ? 'translate(2px, 2px)' : 'none'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: isSeleccionado ? '#ffffff' : 'var(--text-main)' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: '900', color: isSeleccionado ? 'var(--border-light)' : 'var(--text-main)' }}>
                       {obj.dia}
                     </span>
                     {eventosDelDia.length > 0 && (
-                      <span style={{ background: 'var(--accent-cyan)', color: '#171717', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-mono)', border: '1px solid #171717' }}>
+                      <span style={{ background: 'var(--accent-cyan)', color: '#171717', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-mono)', border: '1px solid var(--border-dark)' }}>
                         {eventosDelDia.length}
                       </span>
                     )}
@@ -467,7 +467,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         </div>
 
         {diaSeleccionado && (
-          <div style={{ background: '#171717', color: 'white', padding: '10px 16px', borderRadius: '10px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ background: 'var(--border-dark)', color: 'var(--border-light)', padding: '10px 16px', borderRadius: '10px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span>📅 FILTRANDO EVENTOS PARA EL DÍA: {formatearFechaVista(diaSeleccionado)}</span>
             <button style={{ background: 'transparent', border: 'none', color: 'var(--accent-yellow)', fontWeight: '800', cursor: 'pointer' }} onClick={() => setDiaSeleccionado(null)}>
               [ QUITAR FILTRO ]
@@ -481,7 +481,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         <button 
           onClick={() => setFiltro('todos')} 
           style={{ 
-            background: filtro === 'todos' ? 'var(--accent-cyan)' : '#ffffff', 
+            background: filtro === 'todos' ? 'var(--accent-cyan)' : 'var(--bg-card)', 
             color: 'var(--text-main)', 
             border: '2px solid var(--border-dark)', 
             padding: '8px 18px', 
@@ -490,7 +490,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             fontFamily: 'var(--font-mono)',
             fontSize: '0.85rem',
             cursor: 'pointer',
-            boxShadow: filtro === 'todos' ? '1px 1px 0px #171717' : '3px 3px 0px #171717',
+            boxShadow: filtro === 'todos' ? '1px 1px 0px var(--border-dark)' : '3px 3px 0px var(--border-dark)',
             transform: filtro === 'todos' ? 'translate(2px, 2px)' : 'none',
             transition: 'all 0.1s'
           }}
@@ -500,7 +500,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         <button 
           onClick={() => setFiltro('sesion')} 
           style={{ 
-            background: filtro === 'sesion' ? 'var(--accent-cyan)' : '#ffffff', 
+            background: filtro === 'sesion' ? 'var(--accent-cyan)' : 'var(--bg-card)', 
             color: 'var(--text-main)', 
             border: '2px solid var(--border-dark)', 
             padding: '8px 18px', 
@@ -509,7 +509,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             fontFamily: 'var(--font-mono)',
             fontSize: '0.85rem',
             cursor: 'pointer',
-            boxShadow: filtro === 'sesion' ? '1px 1px 0px #171717' : '3px 3px 0px #171717',
+            boxShadow: filtro === 'sesion' ? '1px 1px 0px var(--border-dark)' : '3px 3px 0px var(--border-dark)',
             transform: filtro === 'sesion' ? 'translate(2px, 2px)' : 'none',
             transition: 'all 0.1s'
           }}
@@ -519,7 +519,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         <button 
           onClick={() => setFiltro('comision')} 
           style={{ 
-            background: filtro === 'comision' ? 'var(--accent-cyan)' : '#ffffff', 
+            background: filtro === 'comision' ? 'var(--accent-cyan)' : 'var(--bg-card)', 
             color: 'var(--text-main)', 
             border: '2px solid var(--border-dark)', 
             padding: '8px 18px', 
@@ -528,7 +528,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             fontFamily: 'var(--font-mono)',
             fontSize: '0.85rem',
             cursor: 'pointer',
-            boxShadow: filtro === 'comision' ? '1px 1px 0px #171717' : '3px 3px 0px #171717',
+            boxShadow: filtro === 'comision' ? '1px 1px 0px var(--border-dark)' : '3px 3px 0px var(--border-dark)',
             transform: filtro === 'comision' ? 'translate(2px, 2px)' : 'none',
             transition: 'all 0.1s'
           }}
@@ -538,7 +538,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
         <button 
           onClick={() => setFiltro('territorio')} 
           style={{ 
-            background: filtro === 'territorio' ? 'var(--accent-cyan)' : '#ffffff', 
+            background: filtro === 'territorio' ? 'var(--accent-cyan)' : 'var(--bg-card)', 
             color: 'var(--text-main)', 
             border: '2px solid var(--border-dark)', 
             padding: '8px 18px', 
@@ -547,7 +547,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             fontFamily: 'var(--font-mono)',
             fontSize: '0.85rem',
             cursor: 'pointer',
-            boxShadow: filtro === 'territorio' ? '1px 1px 0px #171717' : '3px 3px 0px #171717',
+            boxShadow: filtro === 'territorio' ? '1px 1px 0px var(--border-dark)' : '3px 3px 0px var(--border-dark)',
             transform: filtro === 'territorio' ? 'translate(2px, 2px)' : 'none',
             transition: 'all 0.1s'
           }}
@@ -564,7 +564,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'space-between', 
-            background: '#ffffff', 
+            background: 'var(--bg-card)', 
             border: '2px solid var(--border-dark)', 
             padding: '16px 20px', 
             borderRadius: '12px',
@@ -573,7 +573,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             fontFamily: 'var(--font-mono)',
             fontSize: '1rem',
             cursor: 'pointer',
-            boxShadow: '3px 3px 0px #171717'
+            boxShadow: '3px 3px 0px var(--border-dark)'
           }}
         >
           <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -684,8 +684,8 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                       border: '2px solid var(--border-dark)',
                       borderLeft: `8px solid ${colorBorde}`,
                       borderRadius: '12px',
-                      background: '#ffffff',
-                      boxShadow: '3px 3px 0px #171717'
+                      background: 'var(--bg-card)',
+                      boxShadow: '3px 3px 0px var(--border-dark)'
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -706,7 +706,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                       </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: '800', background: '#f5f5f5', border: '2px solid var(--border-dark)', padding: '6px 14px', borderRadius: '8px', color: 'var(--text-main)', boxShadow: '2px 2px 0px #171717' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: '800', background: 'var(--bg-surface)', border: '2px solid var(--border-dark)', padding: '6px 14px', borderRadius: '8px', color: 'var(--text-main)', boxShadow: '2px 2px 0px var(--border-dark)' }}>
                         {evento.tipo === 'sesion' ? '📜 SESIÓN' : evento.tipo === 'comision' ? '🏛️ COMISIÓN' : '📍 TERRITORIO'}
                       </span>
                       {esAdmin && (
@@ -739,7 +739,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
       </div>
 
       {/* Tip de Sincronización */}
-      <div style={{ background: '#ffffff', padding: '16px 20px', borderRadius: '12px', border: '2px solid var(--border-dark)', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: 'auto', boxShadow: '2px 2px 0px #171717' }}>
+      <div style={{ background: 'var(--bg-card)', padding: '16px 20px', borderRadius: '12px', border: '2px solid var(--border-dark)', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: 'auto', boxShadow: '2px 2px 0px var(--border-dark)' }}>
         💡 <strong style={{ color: 'var(--text-main)', fontWeight: '800' }}>SINCRONIZACIÓN AUTOMÁTICA EN SUPABASE:</strong> Todos los compromisos se almacenan y persisten de forma oficial en la base de datos.
       </div>
 

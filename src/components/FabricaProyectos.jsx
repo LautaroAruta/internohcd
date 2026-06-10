@@ -115,12 +115,12 @@ Artículo 3°: De forma.`;
       
       {/* Encabezado */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'var(--accent-purple)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'white', boxShadow: '3px 3px 0px #171717' }}>
+        <div style={{ background: 'var(--accent-purple)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'white', boxShadow: '3px 3px 0px var(--border-dark)' }}>
           <Bot size={26} />
         </div>
         <div>
           <h2 style={{ fontSize: '1.5rem', fontWeight: '900', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '12px', letterSpacing: '-0.02em' }}>
-            ASISTENTE DE REDACCIÓN IA <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--accent-purple)', padding: '4px 12px', borderRadius: '8px', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ MOTOR ANTIGRAVITY ]</span>
+            ASISTENTE DE REDACCIÓN IA <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', color: 'var(--accent-purple)', padding: '4px 12px', borderRadius: '8px', fontWeight: '800', boxShadow: '2px 2px 0px var(--border-dark)' }}>[ MOTOR ANTIGRAVITY ]</span>
           </h2>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0', fontWeight: '700' }}>ASISTENTE DE REDACCIÓN LEGISLATIVA • LEY 1079 MENDOZA</p>
         </div>
@@ -130,7 +130,7 @@ Artículo 3°: De forma.`;
       <div className="fabrica-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', flexGrow: 1 }}>
         
         {/* Columna Izquierda: Formulario de Entrada */}
-        <form onSubmit={generarProyecto} style={{ background: '#ffffff', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={generarProyecto} style={{ background: 'var(--bg-card)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
             <FileText size={20} color="var(--accent-purple)" /> Datos del Reclamo / Iniciativa
           </h3>
@@ -200,7 +200,7 @@ Artículo 3°: De forma.`;
         </form>
 
         {/* Columna Derecha: Resultado IA y Acciones */}
-        <div className="fabrica-right-col" style={{ background: '#f5f5f5', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
+        <div className="fabrica-right-col" style={{ background: 'var(--bg-surface)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
               <Bot size={20} color="var(--accent-purple)" /> VENTANA DE ASISTENTE
@@ -231,7 +231,7 @@ Artículo 3°: De forma.`;
           </div>
 
           {/* Caja de Texto del Resultado */}
-          <div style={{ background: '#ffffff', padding: '20px', borderRadius: '12px', border: '2px solid var(--border-dark)', flexGrow: 1, overflowY: 'auto', maxHeight: '400px', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--text-main)', whiteSpace: 'pre-wrap', lineHeight: 1.6, boxShadow: 'inset 2px 2px 0px rgba(0,0,0,0.05)' }}>
+          <div style={{ background: 'var(--bg-card)', padding: '20px', borderRadius: '12px', border: '2px solid var(--border-dark)', flexGrow: 1, overflowY: 'auto', maxHeight: '400px', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--text-main)', whiteSpace: 'pre-wrap', lineHeight: 1.6, boxShadow: 'inset 2px 2px 0px rgba(0,0,0,0.05)' }}>
             {generando ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '16px', color: 'var(--text-muted)' }}>
                 <Sparkles size={36} className="animate-pulse" color="var(--accent-purple)" />
@@ -248,7 +248,7 @@ Artículo 3°: De forma.`;
           </div>
 
           {/* Prompt Maestro de Referencia */}
-          <div style={{ background: '#ffffff', padding: '14px 18px', borderRadius: '12px', border: '2px solid var(--border-dark)', fontSize: '0.8rem', color: 'var(--text-muted)', boxShadow: '2px 2px 0px #171717' }}>
+          <div style={{ background: 'var(--bg-card)', padding: '14px 18px', borderRadius: '12px', border: '2px solid var(--border-dark)', fontSize: '0.8rem', color: 'var(--text-muted)', boxShadow: '2px 2px 0px var(--border-dark)' }}>
             <span style={{ fontWeight: '800', color: 'var(--text-main)' }}>💡 TIP DE TÉCNICA LEGISLATIVA:</span> El motor utiliza la plantilla del Bloque configurada con los parámetros de la Ley Orgánica de Municipalidades N° 1079 de Mendoza.
           </div>
 

@@ -212,7 +212,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
       </div>
 
       {/* Barra de Búsqueda Rápida */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '12px', padding: '8px 16px', boxShadow: '3px 3px 0px #171717' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '12px', padding: '8px 16px', boxShadow: '3px 3px 0px var(--border-dark)' }}>
         <span style={{ fontSize: '1.2rem' }}>🔍</span>
         <input 
           type="text" 
@@ -228,7 +228,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
 
       {/* Formulario Nuevo Expediente */}
       {mostrarForm && (
-        <form onSubmit={agregarExpediente} style={{ padding: '28px', background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px #171717', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={agregarExpediente} style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>&gt; INGRESO DE NUEVO EXPEDIENTE / BORRADOR</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
@@ -285,7 +285,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
           </div>
 
           {/* Campo para Cargar Archivo Word o PDF */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#f9f9f9', padding: '16px 20px', borderRadius: '12px', border: '2px dashed var(--border-dark)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: 'var(--bg-surface)', padding: '16px 20px', borderRadius: '12px', border: '2px dashed var(--border-dark)' }}>
             <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
               📎 ADJUNTAR ARCHIVO WORD O PDF (Borrador / Proyecto Oficial):
             </label>
@@ -338,10 +338,10 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
 
           return (
             <div key={col.id} style={{ 
-              background: '#f5f5f5', 
+              background: 'var(--bg-surface)', 
               borderRadius: '16px', 
               border: '2px solid var(--border-dark)', 
-              boxShadow: '4px 4px 0px #171717', 
+              boxShadow: '4px 4px 0px var(--border-dark)', 
               display: 'flex', 
               flexDirection: 'column', 
               height: '100%', 
@@ -349,11 +349,11 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
             }}>
               
               {/* Encabezado Columna */}
-              <div style={{ padding: '16px 18px', borderBottom: '2px solid var(--border-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff' }}>
+              <div style={{ padding: '16px 18px', borderBottom: '2px solid var(--border-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-card)' }}>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {col.titulo}
                 </h3>
-                <span style={{ background: col.color, border: '2px solid var(--border-dark)', padding: '2px 8px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: '#171717', boxShadow: '2px 2px 0px #171717' }}>
+                <span style={{ background: col.color, border: '2px solid var(--border-dark)', padding: '2px 8px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: '#171717', boxShadow: '2px 2px 0px var(--border-dark)' }}>
                   {expsColumna.length}
                 </span>
               </div>
@@ -370,7 +370,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                       <form 
                         key={`edit-${exp.id}`}
                         onSubmit={guardarEdicionExp}
-                        style={{ padding: '12px 14px', background: '#ffffff', border: '2px solid var(--accent-cyan)', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: '2px 2px 0px var(--accent-cyan)' }}
+                        style={{ padding: '12px 14px', background: 'var(--bg-card)', border: '2px solid var(--accent-cyan)', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: '2px 2px 0px var(--accent-cyan)' }}
                       >
                         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: 'var(--accent-cyan)' }}>
                           [ EDITANDO EXP: {exp.numero || exp.id} ]
@@ -416,7 +416,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                           value={datosEdicionExp.responsable} 
                           onChange={e => setDatosEdicionExp({...datosEdicionExp, responsable: e.target.value})} 
                         />
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', background: '#f5f5f5', padding: '8px', borderRadius: '8px', border: '1px dashed var(--accent-cyan)' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', background: 'var(--bg-surface)', padding: '8px', borderRadius: '8px', border: '1px dashed var(--accent-cyan)' }}>
                           <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: '800', color: 'var(--text-main)' }}>
                             {datosEdicionExp.archivoNombre ? `📄 Reemplazar: ${datosEdicionExp.archivoNombre}` : '📎 Adjuntar Archivo Word/PDF:'}
                           </label>
@@ -452,20 +452,20 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                         className="animate-fade-in" 
                         style={{ 
                           padding: '12px 14px', 
-                          background: '#ffffff', 
+                          background: 'var(--bg-card)', 
                           border: '2px solid var(--border-dark)', 
                           borderRadius: '10px',
                           display: 'flex', 
                           flexDirection: 'column', 
                           gap: '8px',
-                          boxShadow: '2px 2px 0px #171717',
+                          boxShadow: '2px 2px 0px var(--border-dark)',
                           transition: 'all 0.1s'
                         }}
                       >
                         {/* Encabezado: Tipo y Fecha */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', background: '#f5f5f5', border: '1px solid var(--border-dark)', padding: '2px 8px', borderRadius: '6px', color: 'var(--text-main)', boxShadow: '1px 1px 0px #171717' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', background: 'var(--bg-surface)', border: '1px solid var(--border-dark)', padding: '2px 8px', borderRadius: '6px', color: 'var(--text-main)', boxShadow: '1px 1px 0px var(--border-dark)' }}>
                               {exp.tipo || 'Ordenanza'}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-subtle)', fontWeight: '700', textAlign: 'right', flex: '1 1 auto', minWidth: '120px' }}>
@@ -478,7 +478,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                         </div>
 
                         {/* Comisión y Responsable */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', background: '#f9f9f9', padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-surface)', padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(150,150,150,0.15)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <span style={{ color: 'var(--text-subtle)', fontWeight: '700' }}>COMISIÓN:</span> <span style={{ color: 'var(--text-main)', fontWeight: '800' }}>{exp.comision || 'Obras Públicas'}</span>
                           </div>
@@ -488,12 +488,12 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                         </div>
 
                         {/* Sección Inferior: Archivo y Acciones */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '2px solid rgba(0,0,0,0.08)', paddingTop: '10px', marginTop: '2px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '2px solid rgba(150,150,150,0.15)', paddingTop: '10px', marginTop: '2px' }}>
                           {/* Archivo Adjunto */}
                           <button 
                             type="button"
                             onClick={() => setArchivoSeleccionado(exp)}
-                            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-dark)', borderRadius: '8px', padding: '6px 10px', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent-orange)', textDecoration: 'none', fontWeight: '800', cursor: 'pointer', width: '100%', justifyContent: 'flex-start', boxShadow: '1px 1px 0px #171717' }}
+                            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-dark)', borderRadius: '8px', padding: '6px 10px', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent-orange)', textDecoration: 'none', fontWeight: '800', cursor: 'pointer', width: '100%', justifyContent: 'flex-start', boxShadow: '1px 1px 0px var(--border-dark)' }}
                             title="Ver y Descargar Documento Adjunto"
                           >
                             <FileCode size={16} style={{ flexShrink: 0 }} /> 
@@ -531,7 +531,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                                   <button 
                                     type="button"
                                     onClick={() => moverExpediente(exp.id, col.id === 'En Comisión' ? 'Borrador / Redacción' : col.id === 'Próxima Sesión' ? 'En Comisión' : 'Próxima Sesión')}
-                                    style={{ background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px #171717' }}
+                                    style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px var(--border-dark)' }}
                                     title="Mover a etapa anterior"
                                   >
                                     ◀
@@ -541,7 +541,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                                   <button 
                                     type="button"
                                     onClick={() => moverExpediente(exp.id, col.id === 'Borrador / Redacción' ? 'En Comisión' : col.id === 'En Comisión' ? 'Próxima Sesión' : 'Aprobados')}
-                                    style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px #171717' }}
+                                    style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800', boxShadow: '1px 1px 0px var(--border-dark)' }}
                                     title="Mover a siguiente etapa"
                                   >
                                     ▶
@@ -581,10 +581,10 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
           overflowY: 'auto'
         }}>
           <div className="hardware-unit animate-fade-in" style={{
-            background: '#ffffff',
+            background: 'var(--bg-card)',
             border: '3px solid var(--border-dark)',
             borderRadius: '20px',
-            boxShadow: '12px 12px 0px #171717',
+            boxShadow: '12px 12px 0px var(--border-dark)',
             width: '100%',
             maxWidth: '800px',
             maxHeight: '90vh',
@@ -595,8 +595,8 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
           }}>
             {/* Header del Visor */}
             <div className="no-print" style={{
-              background: '#171717',
-              color: '#ffffff',
+              background: 'var(--border-dark)',
+              color: 'var(--border-light)',
               padding: '20px 28px',
               display: 'flex',
               alignItems: 'center',
@@ -619,7 +619,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                 onClick={() => setArchivoSeleccionado(null)}
                 style={{
                   background: 'var(--accent-red)',
-                  border: '2px solid #ffffff',
+                  border: '2px solid var(--border-light)',
                   color: '#ffffff',
                   padding: '8px 16px',
                   borderRadius: '10px',
@@ -627,7 +627,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                   fontSize: '0.85rem',
                   fontWeight: '900',
                   cursor: 'pointer',
-                  boxShadow: '3px 3px 0px #ffffff'
+                  boxShadow: '3px 3px 0px var(--border-light)'
                 }}
               >
                 [ X ] CERRAR
@@ -635,7 +635,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
             </div>
 
             {/* Metadatos del Archivo */}
-            <div className="no-print" style={{ padding: '24px 28px', background: '#f5f5f5', borderBottom: '2px solid var(--border-dark)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
+            <div className="no-print" style={{ padding: '24px 28px', background: 'var(--bg-surface)', borderBottom: '2px solid var(--border-dark)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
               <div>
                 <span style={{ color: 'var(--text-subtle)', fontWeight: '700', display: 'block' }}>NOMBRE DEL ARCHIVO:</span>
                 <strong style={{ color: 'var(--accent-orange)', fontSize: '0.95rem' }}>{archivoSeleccionado.archivo || 'Proyecto_Oficial.pdf'}</strong>
@@ -651,7 +651,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
             </div>
 
             {/* Vista Previa del Documento */}
-            <div style={{ padding: '28px', overflowY: 'auto', flexGrow: 1, background: '#e5e5e5', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ padding: '28px', overflowY: 'auto', flexGrow: 1, background: 'var(--bg-base)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {archivoSeleccionado.archivo_contenido && 
                archivoSeleccionado.archivo_contenido.startsWith('http') && 
                archivoSeleccionado.archivo_contenido.toLowerCase().endsWith('.pdf') ? (
@@ -703,7 +703,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                 </div>
               ) : (
                 <div id="documento-papel-oficial" style={{
-                  background: '#ffffff',
+                  background: 'var(--bg-card)',
                   padding: '40px 48px',
                   borderRadius: '8px',
                   boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
@@ -711,16 +711,16 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                   maxWidth: '620px',
                   minHeight: '400px',
                   fontFamily: 'serif',
-                  color: '#111111',
+                  color: 'var(--text-main)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '20px',
-                  border: '1px solid #cccccc'
+                  border: '1px solid var(--border-dark)'
                 }}>
                   {/* Membrete HCD */}
-                  <div style={{ borderBottom: '2px solid #333333', paddingBottom: '16px', textAlign: 'center' }}>
+                  <div style={{ borderBottom: '2px solid var(--border-dark)', paddingBottom: '16px', textAlign: 'center' }}>
                     <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-mono)', fontWeight: '800', letterSpacing: '0.05em' }}>HONORABLE CONCEJO DELIBERANTE</h4>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: '#666666' }}>MUNICIPALIDAD DE Gral. SAN MARTÍN - MENDOZA</p>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>MUNICIPALIDAD DE Gral. SAN MARTÍN - MENDOZA</p>
                   </div>
 
                   {/* Contenido del Borrador */}
@@ -757,8 +757,8 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                   </div>
 
                   {/* Firma */}
-                  <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'flex-end', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#555555' }}>
-                    <div style={{ textAlign: 'center', borderTop: '1px dashed #555555', paddingTop: '8px', width: '200px' }}>
+                  <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'flex-end', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    <div style={{ textAlign: 'center', borderTop: '1px dashed var(--border-dark)', paddingTop: '8px', width: '200px' }}>
                       {archivoSeleccionado.responsable || archivoSeleccionado.iniciador || 'Asesor Técnico'}<br />
                       HCD San Martín
                     </div>
@@ -771,7 +771,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
             {/* Panel de Botones de Descarga y Acciones Reales */}
             <div className="no-print" style={{
               padding: '20px 28px',
-              background: '#ffffff',
+              background: 'var(--bg-card)',
               borderTop: '3px solid var(--border-dark)',
               display: 'flex',
               alignItems: 'center',

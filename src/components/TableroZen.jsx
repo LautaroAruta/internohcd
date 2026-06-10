@@ -295,7 +295,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                   })}
                   {eventosInmediatos.length > 4 && (
                     <div style={{ 
-                      background: '#f5f5f5', 
+                      background: 'var(--bg-surface)', 
                       border: '2px solid var(--border-dark)', 
                       padding: '10px 16px', 
                       borderRadius: '8px', 
@@ -304,7 +304,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                       color: 'var(--text-main)', 
                       textAlign: 'center', 
                       fontWeight: '800',
-                      boxShadow: '2px 2px 0px #171717',
+                      boxShadow: '2px 2px 0px var(--border-dark)',
                       marginTop: '4px'
                     }}>
                       [ + {eventosInmediatos.length - 4} COMPROMISOS EN AGENDA COMPLETA ]
@@ -339,7 +339,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                   else if (exp.estado && exp.estado.includes('Aprobado')) { badgeClass = 'badge-aprobado'; badgeText = 'APROBADO'; }
 
                   return (
-                    <div key={exp.id} style={{ display: 'flex', alignItems: 'center', gap: '18px', background: '#ffffff', padding: '16px 20px', borderRadius: '12px', border: '2px solid var(--border-dark)', boxShadow: '3px 3px 0px #171717' }}>
+                    <div key={exp.id} style={{ display: 'flex', alignItems: 'center', gap: '18px', background: 'var(--bg-card)', padding: '16px 20px', borderRadius: '12px', border: '2px solid var(--border-dark)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
                       <span className={`badge-mech ${badgeClass}`}>[ {badgeText} ]</span>
                       <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{exp.titulo}</span>
                     </div>
@@ -377,11 +377,11 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             }}
           >
             <span className="collapse-btn-left" style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-              <div style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '2px 2px 0px #171717' }}>
+              <div style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '2px 2px 0px var(--border-dark)' }}>
                 <FileText size={22} />
               </div>
               <span className="collapse-btn-title" style={{ display: 'flex', alignItems: 'center', gap: '14px', letterSpacing: '-0.02em' }}>
-                03: PAPELES DE LA SEMANA <span className="collapse-btn-badge" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ {papelesSemana.length} ARCHIVOS DISPONIBLES ]</span>
+                03: PAPELES DE LA SEMANA <span className="collapse-btn-badge" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px var(--border-dark)' }}>[ {papelesSemana.length} ARCHIVOS DISPONIBLES ]</span>
               </span>
             </span>
             <div className="collapse-btn-right" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: '800' }}>
@@ -393,7 +393,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '32px', paddingTop: '32px', borderTop: '3px solid var(--border-dark)' }}>
               
               {esAdmin && (
-                <form onSubmit={agregarPapel} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: '#ffffff', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717' }}>
+                <form onSubmit={agregarPapel} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: 'var(--bg-card)', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)' }}>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <FileCheck size={18} /> ✍️ AGREGAR ORDEN DEL DÍA / DOCUMENTO OFICIAL:
                   </div>
@@ -451,7 +451,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                     <form 
                       key={`edit-papel-${p.id}`}
                       onSubmit={guardarEdicionPapel}
-                      style={{ background: '#ffffff', border: '2px solid var(--accent-cyan)', borderRadius: '14px', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '4px 4px 0px var(--accent-cyan)' }}
+                      style={{ background: 'var(--bg-card)', border: '2px solid var(--accent-cyan)', borderRadius: '14px', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '4px 4px 0px var(--accent-cyan)' }}
                     >
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-cyan)' }}>
                         [ EDITANDO DOCUMENTO ID: {p.id} ]
@@ -502,7 +502,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                       </div>
                     </form>
                   ) : (
-                    <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff', padding: '22px 28px', borderRadius: '14px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717', transition: 'all 0.1s', flexWrap: 'wrap', gap: '16px' }} className="papel-item hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_#171717]">
+                    <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-card)', padding: '22px 28px', borderRadius: '14px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)', transition: 'all 0.1s', flexWrap: 'wrap', gap: '16px' }} className="papel-item hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_var(--border-dark)]">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '22px', flex: 1, minWidth: '280px' }}>
                         <span style={{ fontSize: '2rem' }}>{p.icono}</span>
                         <div>
@@ -585,11 +585,11 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             }}
           >
             <span className="collapse-btn-left" style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-              <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '2px 2px 0px #171717' }}>
+              <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '2px 2px 0px var(--border-dark)' }}>
                 <MessageSquare size={22} />
               </div>
               <span className="collapse-btn-title" style={{ display: 'flex', alignItems: 'center', gap: '14px', letterSpacing: '-0.02em' }}>
-                04: MINUTAS RÁPIDAS <span className="collapse-btn-badge" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: '#ffffff', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 12px', borderRadius: '6px', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>[ {minutas.length} NOTAS GUARDADAS ]</span>
+                04: MINUTAS RÁPIDAS <span className="collapse-btn-badge" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '4px 12px', borderRadius: '6px', fontWeight: '800', boxShadow: '2px 2px 0px var(--border-dark)' }}>[ {minutas.length} NOTAS GUARDADAS ]</span>
               </span>
             </span>
             <div className="collapse-btn-right" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: '800' }}>
@@ -601,7 +601,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '32px', paddingTop: '32px', borderTop: '3px solid var(--border-dark)' }}>
               
               {esAdmin && (
-                <form onSubmit={agregarMinuta} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: '#ffffff', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px #171717' }}>
+                <form onSubmit={agregarMinuta} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: 'var(--bg-card)', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)' }}>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <Terminal size={18} /> ✍️ INGRESO DE MINUTA RÁPIDA AL SALIR DE COMISIÓN:
                   </div>
@@ -647,7 +647,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                     <form 
                       key={`edit-${m.id}`}
                       onSubmit={guardarEdicionMinuta}
-                      style={{ background: '#ffffff', border: '2px solid var(--accent-lime)', borderRadius: '14px', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '4px 4px 0px var(--accent-lime)' }}
+                      style={{ background: 'var(--bg-card)', border: '2px solid var(--accent-lime)', borderRadius: '14px', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '4px 4px 0px var(--accent-lime)' }}
                     >
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-lime)' }}>
                         [ EDITANDO MINUTA ID: {m.id} ]
@@ -686,13 +686,13 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                       </div>
                     </form>
                   ) : (
-                    <div key={m.id} className="minuta-item" style={{ background: '#ffffff', border: '2px solid var(--border-dark)', borderRadius: '14px', padding: '24px 28px', borderLeft: '8px solid var(--accent-lime)', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: '4px 4px 0px #171717' }}>
+                    <div key={m.id} className="minuta-item" style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '14px', padding: '24px 28px', borderLeft: '8px solid var(--accent-lime)', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: '4px 4px 0px var(--border-dark)' }}>
                       <div className="minuta-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <strong style={{ color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>[ {m.fecha} ]</strong> // <span style={{ color: 'var(--text-main)', fontWeight: '800' }}>{m.comision}</span>
                         </span>
                         <div className="minuta-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <span style={{ fontFamily: 'var(--font-mono)', background: '#f5f5f5', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>AUTOR: {m.autor}</span>
+                          <span style={{ fontFamily: 'var(--font-mono)', background: 'var(--bg-surface)', border: '2px solid var(--border-dark)', padding: '4px 12px', borderRadius: '6px', fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: '800', boxShadow: '2px 2px 0px var(--border-dark)' }}>AUTOR: {m.autor}</span>
                           {esAdmin && (
                             <>
                               <button 
@@ -733,10 +733,10 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             href="https://www.youtube.com/results?search_query=hcd+san+martin+mendoza+en+vivo" 
             target="_blank" 
             rel="noopener noreferrer"
-            style={{ background: 'var(--accent-orange)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
-            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
+            style={{ background: 'var(--accent-orange)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px var(--border-dark)' }}
+            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_var(--border-dark)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_var(--border-dark)]"
           >
-            <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-orange)', boxShadow: '3px 3px 0px #171717' }}>
+            <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-orange)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
               <Play size={26} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -749,10 +749,10 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             href="https://sanmartinmza.gob.ar/" 
             target="_blank" 
             rel="noopener noreferrer"
-            style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'var(--text-main)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
-            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
+            style={{ background: 'var(--accent-cyan)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'var(--text-main)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px var(--border-dark)' }}
+            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_var(--border-dark)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_var(--border-dark)]"
           >
-            <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-cyan)', boxShadow: '3px 3px 0px #171717' }}>
+            <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-cyan)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
               <FileSearch size={26} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -769,10 +769,10 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                 alert('Módulo territorial activado.');
               }
             }}
-            style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'var(--text-main)', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
-            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
+            style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'var(--text-main)', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px var(--border-dark)' }}
+            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_var(--border-dark)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_var(--border-dark)]"
           >
-            <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-lime)', boxShadow: '3px 3px 0px #171717' }}>
+            <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-lime)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
               <FileCheck size={26} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -796,10 +796,10 @@ Por favor, asísteme con el siguiente tema local: `;
                 setMensajeCopiado(true);
                 setTimeout(() => setMensajeCopiado(false), 3500);
               }}
-              style={{ width: '100%', background: 'var(--accent-purple)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'white', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px #171717' }}
-              className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
+              style={{ width: '100%', background: 'var(--accent-purple)', border: '2px solid var(--border-dark)', padding: '28px 24px', borderRadius: '16px', color: 'white', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.1s', cursor: 'pointer', boxShadow: '6px 6px 0px var(--border-dark)' }}
+              className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_var(--border-dark)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_var(--border-dark)]"
             >
-              <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-purple)', boxShadow: '3px 3px 0px #171717' }}>
+              <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: 'var(--accent-purple)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
                 <FileCode size={26} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>

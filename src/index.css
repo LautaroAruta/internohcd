@@ -7,6 +7,7 @@
   --bg-surface-hover: #ebebeb;
   --bg-dark: #171717;
   --bg-led: #121212;
+  --bg-card: #ffffff;
   
   /* Bordes y Sombras Mecánicas Duras */
   --border-dark: #171717;
@@ -31,15 +32,44 @@
   --accent-red: #ef4444;
 
   /* Sombras Duras de Hardware (Hard Drop Shadows) */
-  --shadow-unit: 6px 6px 0px #171717, inset 2px 2px 0px #ffffff;
-  --shadow-unit-hover: 8px 8px 0px #171717, inset 2px 2px 0px #ffffff;
-  --shadow-btn: 4px 4px 0px #171717;
-  --shadow-btn-active: 1px 1px 0px #171717;
+  --shadow-unit: 6px 6px 0px var(--border-dark), inset 2px 2px 0px var(--border-light);
+  --shadow-unit-hover: 8px 8px 0px var(--border-dark), inset 2px 2px 0px var(--border-light);
+  --shadow-btn: 4px 4px 0px var(--border-dark);
+  --shadow-btn-active: 1px 1px 0px var(--border-dark);
   --shadow-led: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 0 rgba(255, 255, 255, 0.5);
+  --shadow-input-inset: inset 2px 2px 0px rgba(0, 0, 0, 0.1);
+
+  --bg-input-focus: #fffbeb;
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
+
+[data-theme='dark'] {
+  --bg-base: #121212;
+  --bg-surface: #1e1e1e;
+  --bg-surface-hover: #2a2a2a;
+  --bg-dark: #262626;
+  --bg-led: #0a0a0a;
+  --bg-card: #1e1e1e;
+  
+  --border-dark: #e5e5e5;
+  --border-light: #262626;
+  
+  --text-main: #e5e5e5;
+  --text-muted: #a3a3a3;
+  --text-subtle: #737373;
+
+  --shadow-unit: 6px 6px 0px var(--border-dark), inset 2px 2px 0px var(--border-light);
+  --shadow-unit-hover: 8px 8px 0px var(--border-dark), inset 2px 2px 0px var(--border-light);
+  --shadow-btn: 4px 4px 0px var(--border-dark);
+  --shadow-btn-active: 1px 1px 0px var(--border-dark);
+  --shadow-led: inset 0 4px 12px rgba(0, 0, 0, 0.9), 0 2px 0 rgba(255, 255, 255, 0.1);
+  --shadow-input-inset: inset 2px 2px 0px rgba(0, 0, 0, 0.3);
+
+  --bg-input-focus: #2d231e;
+}
+
 
 * {
   box-sizing: border-box;
@@ -61,6 +91,12 @@ body {
     linear-gradient(rgba(23, 23, 23, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(23, 23, 23, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
+}
+
+[data-theme='dark'] body {
+  background-image: 
+    linear-gradient(rgba(229, 229, 229, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229, 229, 229, 0.04) 1px, transparent 1px);
 }
 
 #root {
@@ -110,7 +146,7 @@ body {
 
 /* Botones Mecánicos Gruesos (Chunky Mechanical Push Buttons) */
 .btn-mechanical {
-  background: #ffffff;
+  background: var(--bg-card);
   color: var(--text-main);
   border: 2px solid var(--border-dark);
   border-radius: 12px;
@@ -131,7 +167,7 @@ body {
 
 .btn-mechanical:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0px #171717;
+  box-shadow: 5px 5px 0px var(--border-dark);
 }
 
 .btn-mechanical:active {
@@ -150,7 +186,7 @@ body {
 
 /* Botones de Acción Mini Mecánicos (Mini Action Buttons) */
 .btn-mini-mech {
-  background: #ffffff;
+  background: var(--bg-card);
   color: var(--text-main);
   border: 2px solid var(--border-dark);
   padding: 6px 12px;
@@ -160,7 +196,7 @@ body {
   font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.1s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 2px 2px 0px #171717;
+  box-shadow: 2px 2px 0px var(--border-dark);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -169,16 +205,16 @@ body {
 
 .btn-mini-mech:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #171717;
+  box-shadow: 3px 3px 0px var(--border-dark);
 }
 
 .btn-mini-mech:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #171717;
+  box-shadow: 1px 1px 0px var(--border-dark);
 }
 
 .btn-mini-mech.edit {
-  background: #ffffff;
+  background: var(--bg-card);
   color: var(--text-main);
 }
 
@@ -197,7 +233,7 @@ body {
 
 /* Pestañas de Consola de Control (Mission Control Tabs) */
 .nav-mech-btn {
-  background: #ffffff;
+  background: var(--bg-card);
   color: var(--text-muted);
   border: 2px solid var(--border-dark);
   padding: 8px 18px;
@@ -207,7 +243,7 @@ body {
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.1s ease;
-  box-shadow: 2px 2px 0px #171717;
+  box-shadow: 2px 2px 0px var(--border-dark);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -216,14 +252,14 @@ body {
 .nav-mech-btn:hover {
   color: var(--text-main);
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #171717;
+  box-shadow: 3px 3px 0px var(--border-dark);
 }
 
 .nav-mech-btn.active {
   background: var(--accent-orange);
   color: white;
   transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px #171717;
+  box-shadow: 1px 1px 0px var(--border-dark);
 }
 
 /* Custom Scrollbar */
@@ -269,7 +305,7 @@ body {
 /* Inputs & Forms */
 .input-hardware {
   width: 100%;
-  background: #ffffff;
+  background: var(--bg-card);
   border: 2px solid var(--border-dark);
   border-radius: 10px;
   padding: 12px 16px;
@@ -278,12 +314,12 @@ body {
   font-size: 0.95rem;
   transition: all 0.15s ease;
   outline: none;
-  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-input-inset);
 }
 
 .input-hardware:focus {
   border-color: var(--accent-orange);
-  background: #fffbeb;
+  background: var(--bg-input-focus);
   box-shadow: inset 2px 2px 0px rgba(249,115,22,0.2);
 }
 
@@ -316,10 +352,10 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: 2px solid var(--border-dark);
-  box-shadow: 2px 2px 0px #171717;
+  box-shadow: 2px 2px 0px var(--border-dark);
 }
 
-.badge-borrador { background: #e5e5e5; color: #171717; }
+.badge-borrador { background: var(--bg-base); color: var(--text-main); }
 .badge-comision { background: var(--accent-yellow); color: #171717; }
 .badge-sesion { background: var(--accent-cyan); color: #171717; }
 .badge-aprobado { background: var(--accent-lime); color: #171717; }
@@ -414,11 +450,11 @@ body {
   .hardware-unit {
     padding: 20px !important;
     border-radius: 12px !important;
-    box-shadow: 4px 4px 0px #171717, inset 1px 1px 0px #ffffff !important;
+    box-shadow: 4px 4px 0px var(--border-dark), inset 1px 1px 0px var(--border-light) !important;
   }
 
   .hardware-unit:hover {
-    box-shadow: 5px 5px 0px #171717, inset 1px 1px 0px #ffffff !important;
+    box-shadow: 5px 5px 0px var(--border-dark), inset 1px 1px 0px var(--border-light) !important;
   }
 
   /* Pantallas LED Simuladas */
