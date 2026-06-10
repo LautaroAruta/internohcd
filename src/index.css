@@ -753,7 +753,7 @@ body {
   }
   .calendar-7col-grid {
     display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
     min-width: 0 !important;
     gap: 8px !important;
     width: 100% !important;
