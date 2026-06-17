@@ -154,7 +154,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
               <MessageSquare size={20} color="var(--accent-lime)" /> Nuevo Reclamo en Territorio
             </h3>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="form-row-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>DISTRITO</label>
                 <select className="input-hardware" value={reclamo.barrio} onChange={e => setReclamo({...reclamo, barrio: e.target.value})}>
@@ -175,7 +175,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="form-row-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)' }}>VECINO REFERENTE</label>
                 <input 
@@ -285,7 +285,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-lime)' }}>
                     [ EDITANDO RECLAMO ID: {rec.id} ]
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="form-row-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <select 
                       className="input-hardware" 
                       value={datosEdicion.barrio} 
@@ -303,7 +303,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                       placeholder="Domicilio / Barrio" 
                     />
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="form-row-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <input 
                       type="text" 
                       className="input-hardware" 

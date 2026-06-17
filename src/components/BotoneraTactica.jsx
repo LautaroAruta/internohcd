@@ -65,12 +65,12 @@ export default function BotoneraTactica() {
               gap: '20px',
               border: '2px solid var(--border-dark)', 
               borderRadius: '16px',
-              boxShadow: '6px 6px 0px #171717',
+              boxShadow: '6px 6px 0px var(--border-dark)',
               transition: 'all 0.1s'
             }}
-            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#171717] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_#171717]"
+            className="hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_var(--border-dark)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[2px_2px_0px_var(--border-dark)]"
           >
-            <div style={{ background: '#ffffff', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: btn.colorBg === 'var(--accent-lime)' || btn.colorBg === 'var(--accent-cyan)' ? 'var(--text-main)' : btn.colorBg, boxShadow: '3px 3px 0px #171717' }}>
+            <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-dark)', padding: '14px', borderRadius: '12px', color: btn.colorBg === 'var(--accent-lime)' || btn.colorBg === 'var(--accent-cyan)' ? 'var(--text-main)' : btn.colorBg, boxShadow: '3px 3px 0px var(--border-dark)' }}>
               {btn.icono}
             </div>
             <div>
@@ -86,7 +86,7 @@ export default function BotoneraTactica() {
       {/* Guía Telefónica de Emergencia / Contactos Frecuentes */}
       <div className="hardware-unit animate-fade-in" style={{ padding: '36px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderBottom: '2px solid var(--border-dark)', paddingBottom: '20px', marginBottom: '24px' }}>
-          <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '3px 3px 0px #171717' }}>
+          <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', padding: '12px', borderRadius: '12px', color: 'var(--text-main)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
             <Phone size={26} />
           </div>
           <div>
@@ -101,7 +101,7 @@ export default function BotoneraTactica() {
               key={i} 
               href={`tel:${c.tel}`}
               style={{ 
-                background: '#ffffff', 
+                background: 'var(--bg-card)', 
                 border: '2px solid var(--border-dark)', 
                 padding: '20px 24px', 
                 borderRadius: '14px', 
@@ -110,16 +110,16 @@ export default function BotoneraTactica() {
                 justifyContent: 'space-between',
                 textDecoration: 'none',
                 color: 'var(--text-main)',
-                boxShadow: '4px 4px 0px #171717',
+                boxShadow: '4px 4px 0px var(--border-dark)',
                 transition: 'all 0.1s'
               }}
-              className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_#171717]"
+              className="hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_var(--border-dark)]"
             >
               <div>
                 <div style={{ fontSize: '1.05rem', fontWeight: '800' }}>{c.nombre}</div>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: '700' }}>{c.interno} // TEL: {c.tel}</div>
               </div>
-              <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: '800', boxShadow: '2px 2px 0px #171717' }}>
+              <div style={{ background: 'var(--accent-lime)', border: '2px solid var(--border-dark)', color: 'var(--text-main)', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: '800', boxShadow: '2px 2px 0px var(--border-dark)' }}>
                 📞 Llamar
               </div>
             </a>

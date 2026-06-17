@@ -186,7 +186,7 @@ export default function App() {
 
 
             {/* Contenedor Relativo para Botón de Alarma, Login y Popup */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
+            <div className="app-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
               
               {/* Selector de Modo Oscuro / Claro Táctico (Switch Modular) */}
               <button

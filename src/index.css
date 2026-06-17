@@ -753,7 +753,19 @@ body {
     padding: 20px !important;
   }
 
-  /* Botonera táctica en grilla 2x2 perfecta con botones altos para el pulgar */
+  /* Grilla principal Zen (Inicio) */
+  .zen-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Filas de formulario de doble columna se apilan en vertical */
+  .form-row-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Botonera táctica adaptada al ancho */
   .tactical-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
@@ -773,8 +785,11 @@ body {
     box-sizing: border-box !important;
   }
 
-  /* Botones mecánicos ocupan 100% en celulares */
-  .btn-mechanical {
+  /* Botones mecánicos ocupan 100% en celulares en formularios y listados */
+  .form-grid .btn-mechanical,
+  .gestor-grid .btn-mechanical,
+  .fabrica-grid .btn-mechanical,
+  .agenda-futura-container .btn-mechanical {
     width: 100% !important;
     box-sizing: border-box !important;
     justify-content: center !important;
@@ -786,13 +801,66 @@ body {
     width: 100% !important;
     padding-bottom: 12px !important;
     display: block !important;
+    -webkit-overflow-scrolling: touch;
   }
+
   .calendar-7col-grid {
     display: grid !important;
-    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-    min-width: 0 !important;
+    grid-template-columns: repeat(7, minmax(80px, 1fr)) !important;
+    min-width: 600px !important;
     gap: 8px !important;
     width: 100% !important;
+  }
+
+  /* Botones de acción del calendario */
+  .calendar-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .calendar-actions button {
+    width: 100% !important;
+  }
+
+  /* Optimizar papel oficial en móvil */
+  #documento-papel-oficial {
+    padding: 24px 16px !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Reglas ultra compactas para pantallas menores a 640px (Header & Tactical Grid) */
+@media screen and (max-width: 640px) {
+  .app-header-title-group {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .app-header-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .app-header-actions > div.hardware-unit {
+    position: absolute !important;
+    right: 0 !important;
+    width: 290px !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .app-header-version-text {
+    font-size: 0.65rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .tactical-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 

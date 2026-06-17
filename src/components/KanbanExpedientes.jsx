@@ -384,7 +384,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                           onChange={e => setDatosEdicionExp({...datosEdicionExp, titulo: e.target.value})} 
                           required 
                         />
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                        <div className="form-row-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                           <select 
                             className="input-hardware" 
                             style={{ padding: '6px 8px', fontSize: '0.8rem' }}

@@ -359,7 +359,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             </h3>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="calendar-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {diaSeleccionado && (
               <button 
                 onClick={() => setDiaSeleccionado(null)} 

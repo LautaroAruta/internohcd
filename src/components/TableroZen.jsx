@@ -261,7 +261,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
       </div>
 
       {/* CAJAS MODULARES GEMELAS: AGENDA Y ESTADO PARLAMENTARIO */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '32px' }}>
+      <div className="zen-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '32px' }}>
         
         {/* UNIDAD 1: AGENDA INMEDIATA */}
         <div className="hardware-unit" style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -623,7 +623,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                       onChange={e => setNuevaMinuta({...nuevaMinuta, autor: e.target.value})}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '18px' }}>
+                  <div className="form-row-grid" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '18px' }}>
                     <input 
                       type="text" 
                       placeholder="RESUMEN (EJ: LA OPOSICIÓN NO DIO QUÓRUM POR EL ART 4...)" 
