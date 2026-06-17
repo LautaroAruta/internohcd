@@ -263,7 +263,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
 
       {/* Formulario de Nuevo Evento (SIN EL CAMPO ALCANCE) */}
       {mostrarForm && (
-        <form onSubmit={agregarForm || agregarEvento} className="animate-fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={agregarEvento} className="animate-fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>&gt; NUEVO EVENTO EN CALENDARIO</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
