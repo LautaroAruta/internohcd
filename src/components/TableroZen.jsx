@@ -341,7 +341,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                   return (
                     <div key={exp.id} style={{ display: 'flex', alignItems: 'center', gap: '18px', background: 'var(--bg-card)', padding: '16px 20px', borderRadius: '12px', border: '2px solid var(--border-dark)', boxShadow: '3px 3px 0px var(--border-dark)' }}>
                       <span className={`badge-mech ${badgeClass}`}>[ {badgeText} ]</span>
-                      <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{exp.titulo}</span>
+                      <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--text-main)', wordBreak: 'break-word' }}>{exp.titulo}</span>
                     </div>
                   );
                 })
@@ -393,7 +393,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '32px', paddingTop: '32px', borderTop: '3px solid var(--border-dark)' }}>
               
               {esAdmin && (
-                <form onSubmit={agregarPapel} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: 'var(--bg-card)', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)' }}>
+                <form onSubmit={agregarPapel} className="form-grid" style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: 'var(--bg-card)', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)' }}>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <FileCheck size={18} /> ✍️ AGREGAR ORDEN DEL DÍA / DOCUMENTO OFICIAL:
                   </div>
@@ -435,7 +435,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                       onChange={e => setNuevoPapel({...nuevoPapel, icono: e.target.value})}
                     />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <button type="submit" className="btn-mechanical btn-cyan" style={{ padding: '14px 32px', borderRadius: '10px' }}>
                       <Plus size={20} /> AGREGAR DOCUMENTO
                     </button>
@@ -451,6 +451,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                     <form 
                       key={`edit-papel-${p.id}`}
                       onSubmit={guardarEdicionPapel}
+                      className="form-grid"
                       style={{ background: 'var(--bg-card)', border: '2px solid var(--accent-cyan)', borderRadius: '14px', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '4px 4px 0px var(--accent-cyan)' }}
                     >
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-cyan)' }}>
@@ -492,7 +493,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                           onChange={e => setDatosEdicionPapel({...datosEdicionPapel, icono: e.target.value})} 
                         />
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                      <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                         <button type="button" className="btn-mechanical" onClick={() => setPapelEditando(null)}>
                           <X size={16} /> CANCELAR
                         </button>
@@ -601,7 +602,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '32px', paddingTop: '32px', borderTop: '3px solid var(--border-dark)' }}>
               
               {esAdmin && (
-                <form onSubmit={agregarMinuta} style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: 'var(--bg-card)', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)' }}>
+                <form onSubmit={agregarMinuta} className="form-grid" style={{ display: 'flex', flexDirection: 'column', gap: '18px', background: 'var(--bg-card)', padding: '28px', borderRadius: '16px', border: '2px solid var(--border-dark)', boxShadow: '4px 4px 0px var(--border-dark)' }}>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <Terminal size={18} /> ✍️ INGRESO DE MINUTA RÁPIDA AL SALIR DE COMISIÓN:
                   </div>
@@ -647,6 +648,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                     <form 
                       key={`edit-${m.id}`}
                       onSubmit={guardarEdicionMinuta}
+                      className="form-grid"
                       style={{ background: 'var(--bg-card)', border: '2px solid var(--accent-lime)', borderRadius: '14px', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '4px 4px 0px var(--accent-lime)' }}
                     >
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: '800', color: 'var(--accent-lime)' }}>
@@ -676,7 +678,7 @@ export default function TableroZen({ expedientes, eventos, setTabActiva, esAdmin
                         onChange={e => setDatosEdicionMinuta({...datosEdicionMinuta, texto: e.target.value})} 
                         required 
                       />
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                      <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                         <button type="button" className="btn-mechanical" onClick={() => setMinutaEditando(null)}>
                           <X size={16} /> CANCELAR
                         </button>

@@ -335,7 +335,7 @@ export default function App() {
               <button onClick={() => { setMostrarLogin(false); setLoginError(''); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: '800' }}>[ X ]</button>
             </div>
             
-            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <form onSubmit={handleLogin} className="form-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-muted)', marginBottom: '6px' }}>USUARIO</label>
                 <input 
@@ -365,7 +365,7 @@ export default function App() {
                 </div>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '8px' }}>
+              <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '8px' }}>
                 <button type="button" className="btn-mechanical" onClick={() => { setMostrarLogin(false); setLoginError(''); }}>CANCELAR</button>
                 <button type="submit" className="btn-mechanical btn-orange" disabled={loginCargando}>
                   {loginCargando ? 'VERIFICANDO...' : 'INGRESAR'}

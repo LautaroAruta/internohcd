@@ -323,6 +323,14 @@ body {
   box-shadow: inset 2px 2px 0px rgba(249,115,22,0.2);
 }
 
+/* Contenedor de botones de acción del formulario */
+.form-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
 /* Etiquetas Mecánicas (Hardware Labels) */
 .mech-label {
   font-family: var(--font-mono);
@@ -822,6 +830,19 @@ body {
   }
 
   .calendar-actions button {
+    width: 100% !important;
+  }
+
+  /* Botones de acción de formularios */
+  .form-actions {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+  
+  .form-actions button, .form-actions a {
     width: 100% !important;
   }
 

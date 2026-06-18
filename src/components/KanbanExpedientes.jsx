@@ -228,7 +228,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
 
       {/* Formulario Nuevo Expediente */}
       {mostrarForm && (
-        <form onSubmit={agregarExpediente} style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={agregarExpediente} className="form-grid" style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>&gt; INGRESO DE NUEVO EXPEDIENTE / BORRADOR</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
@@ -306,7 +306,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
             )}
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '8px' }}>
+          <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '8px' }}>
             <button type="button" className="btn-mechanical" onClick={() => setMostrarForm(false)} disabled={subiendoArchivo}>CANCELAR</button>
             <button type="submit" className="btn-mechanical btn-lime" disabled={subiendoArchivo}>
               {subiendoArchivo ? '⏳ SUBIENDO ARCHIVO...' : 'GUARDAR EN SUPABASE'}
@@ -370,6 +370,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                       <form 
                         key={`edit-${exp.id}`}
                         onSubmit={guardarEdicionExp}
+                        className="form-grid"
                         style={{ padding: '12px 14px', background: 'var(--bg-card)', border: '2px solid var(--accent-cyan)', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: '2px 2px 0px var(--accent-cyan)' }}
                       >
                         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: '800', color: 'var(--accent-cyan)' }}>
@@ -437,7 +438,7 @@ export default function KanbanExpedientes({ expedientes, setExpedientes, esAdmin
                             </span>
                           )}
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                        <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
                           <button type="button" className="btn-mechanical" style={{ padding: '4px 8px', fontSize: '0.75rem' }} onClick={() => setExpedienteEditando(null)} disabled={subiendoArchivo}>
                             <X size={14} />
                           </button>

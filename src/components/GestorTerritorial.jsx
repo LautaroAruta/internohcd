@@ -149,7 +149,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
         
         {/* Columna Izquierda: Formulario de Captura Rápida */}
         {esAdmin && (
-          <form onSubmit={guardarReclamo} style={{ background: 'var(--bg-card)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <form onSubmit={guardarReclamo} className="form-grid" style={{ background: 'var(--bg-card)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
               <MessageSquare size={20} color="var(--accent-lime)" /> Nuevo Reclamo en Territorio
             </h3>
@@ -270,7 +270,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                 <form 
                   key={`edit-${rec.id}`}
                   onSubmit={guardarEdicion}
-                  className="animate-fade-in"
+                  className="form-grid animate-fade-in"
                   style={{ 
                     padding: '20px', 
                     background: 'var(--bg-card)', 
@@ -327,7 +327,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                     placeholder="Detalle del reclamo" 
                     required 
                   />
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                  <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                     <button type="button" className="btn-mechanical" onClick={() => setReclamoEditando(null)}>
                       <X size={16} /> CANCELAR
                     </button>
@@ -352,7 +352,7 @@ export default function GestorTerritorial({ esAdmin = false }) {
                     boxShadow: '3px 3px 0px var(--border-dark)'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                       <span style={{ fontWeight: '800', color: 'var(--text-main)', background: 'var(--accent-lime)', padding: '2px 8px', borderRadius: '6px', border: '1px solid var(--border-dark)' }}>{rec.barrio}</span>
                       {rec.domicilio && rec.domicilio !== 'Sin Domicilio Especificado' && (
@@ -366,8 +366,8 @@ export default function GestorTerritorial({ esAdmin = false }) {
                     {rec.detalle}
                   </p>
 
-                  <div className="reclamo-item-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-subtle)', borderTop: '2px solid rgba(150,150,150,0.15)', paddingTop: '12px', marginTop: '2px' }}>
-                    <div style={{ display: 'flex', gap: '16px' }}>
+                  <div className="reclamo-item-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-subtle)', borderTop: '2px solid rgba(150,150,150,0.15)', paddingTop: '12px', marginTop: '2px', flexWrap: 'wrap', gap: '12px' }}>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                       <span>REFERENTE: <strong style={{ color: 'var(--text-main)' }}>{rec.vecino}</strong></span>
                       <span>TEL: <strong style={{ color: 'var(--text-main)' }}>{rec.tel || rec.telefono}</strong></span>
                     </div>

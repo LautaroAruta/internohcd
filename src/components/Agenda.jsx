@@ -263,7 +263,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
 
       {/* Formulario de Nuevo Evento (SIN EL CAMPO ALCANCE) */}
       {mostrarForm && (
-        <form onSubmit={agregarEvento} className="animate-fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={agregarEvento} className="form-grid animate-fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>&gt; NUEVO EVENTO EN CALENDARIO</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
@@ -340,7 +340,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '8px' }}>
+          <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '8px' }}>
             <button type="button" className="btn-mechanical" onClick={() => setMostrarForm(false)}>CANCELAR</button>
             <button type="submit" className="btn-mechanical btn-lime">GUARDAR EN SUPABASE</button>
           </div>
@@ -600,7 +600,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                   <form 
                     key={`edit-${evento.id}`} 
                     onSubmit={guardarEdicion}
-                    className="animate-fade-in"
+                    className="form-grid animate-fade-in"
                     style={{ 
                       padding: '20px', 
                       background: '#fff', 
@@ -663,7 +663,7 @@ export default function Agenda({ eventos: propsEventos, setEventos: propsSetEven
                         placeholder="Participantes" 
                       />
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                    <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                       <button type="button" className="btn-mechanical" onClick={() => setEventoEditando(null)}>
                         <X size={16} /> CANCELAR
                       </button>

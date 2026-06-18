@@ -130,7 +130,7 @@ Artículo 3°: De forma.`;
       <div className="fabrica-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', flexGrow: 1 }}>
         
         {/* Columna Izquierda: Formulario de Entrada */}
-        <form onSubmit={generarProyecto} style={{ background: 'var(--bg-card)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={generarProyecto} className="form-grid" style={{ background: 'var(--bg-card)', padding: '28px', border: '2px solid var(--border-dark)', borderRadius: '16px', boxShadow: '4px 4px 0px var(--border-dark)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
             <FileText size={20} color="var(--accent-purple)" /> Datos del Reclamo / Iniciativa
           </h3>
@@ -207,7 +207,7 @@ Artículo 3°: De forma.`;
             </h3>
             
             {resultadoIA && (
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="form-actions" style={{ display: 'flex', gap: '12px' }}>
                 <button 
                   onClick={copiarAlPortapapeles} 
                   className="btn-mechanical" 
